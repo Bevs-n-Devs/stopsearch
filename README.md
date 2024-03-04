@@ -5,7 +5,7 @@
 
 ## MVP Features
 
-1. **Refactor App Into API:**
+1. **Refactor App Into API**
 2. **Provide TDD tests and BDD test cases**
 
 
