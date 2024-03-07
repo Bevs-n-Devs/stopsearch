@@ -22,31 +22,51 @@ def test_index_route(test_client):
     # Decode bytes and parse JSON
     response_payload = json.loads(endpoint_url.data)
     
-    print(type(response_payload))
-    print(response_payload)
-    
-    assert (endpoint_url.status_code == 200), "Expected 200 status code"
     assert (isinstance(response_payload, list)), "Expected object to be a list"
     assert (isinstance(response_payload[0], dict)), "Expected object to be a dictionary"
     
-    assert ("app" in response_payload[0]), "Expected app attribute"
-    assert ("description" in response_payload[0]), "Expected description attribute"
-    assert ("founder" in response_payload[0]), "Expected founder attribute"
-    assert ("pages" in response_payload[0]), "Expectd pages attribute"
-    assert ("year" in response_payload[0]), "Expectd year attribute"
+    assert ("App" in response_payload[0]), "Expected App attribute"
+    assert ("AppPage" in response_payload[0]), "Expected AppPage attribute"
+    assert ("Description" in response_payload[0]), "Expected Description attribute"
+    assert ("Founder" in response_payload[0]), "Expected Founder attribute"
+    assert ("Pages" in response_payload[0]), "Expected Pages attribute"
+    assert ("Year" in response_payload[0]), "Expected Year attribute"
+    
+    assert (isinstance(response_payload[0]["App"], str)), "Expected App to be string"
+    assert (isinstance(response_payload[0]["AppPage"], str)), "Expected AppPage to be string"
+    assert (isinstance(response_payload[0]["Description"], str)), "Expected Description to be string"
+    assert (isinstance(response_payload[0]["Founder"], str)), "Expected Founder to be string"
+    assert (isinstance(response_payload[0]["Pages"], list)), "Expected Pages to be a list"
+    assert (isinstance(response_payload[0]["Year"], str)), "Expected Year to be a string"
+    
+    assert ("CreateReport" in response_payload[0]["Pages"][0]), "Expected CreateReport attribute"
+    assert ("FindReportByVictim" in response_payload[0]["Pages"][0]), "Expected FindReportByVictim attribute"
+    assert ("FindReportByWitness" in response_payload[0]["Pages"][0]), "Expected FindReportByWitness attribute"
+    assert ("HomePage" in response_payload[0]["Pages"][0]), "Expected HomePage attribute"
+    assert ("Index" in response_payload[0]["Pages"][0]), "Expected Index attribute"
+    assert ("Manual" in response_payload[0]["Pages"][0]), "Expected Manual attribute"
+    
+    assert (response_payload[0]["App"] == "StopSearch UK"), "Expected object to be equal"
+    assert (response_payload[0]["AppPage"] == "/"), "Expected object to be equal"
+    assert (response_payload[0]["Description"] == "An app developed to record and report incidents between the police and the public."), "Expected object to be equal"
+    assert (response_payload[0]["Founder"] == "Daniella Rose + Akoto Tech"), "Expected object to be equal"
+    assert (response_payload[0]["Year"] == "2024"), "Expected object to be equal"
+    
+    assert (isinstance(response_payload[0]["Pages"][0]["CreateReport"], str)), "Expected CreateReport to be a string"
+    assert (isinstance(response_payload[0]["Pages"][0]["FindReportByVictim"], str)), "Expected FindReportByVictim to be a string"
+    assert (isinstance(response_payload[0]["Pages"][0]["FindReportByWitness"], str)), "Expected FindReportByWitness to be a string"
+    assert (isinstance(response_payload[0]["Pages"][0]["HomePage"], str)), "Expected HomePage to be a string"
+    assert (isinstance(response_payload[0]["Pages"][0]["Index"], str)), "Expected Index to be a string"
+    assert (isinstance(response_payload[0]["Pages"][0]["Manual"], str)), "Expected Manual to be a string"
+    
+    assert (response_payload[0]["Pages"][0]["CreateReport"] == "/create/report/"), "Expected object to be equal"
+    assert (response_payload[0]["Pages"][0]["FindReportByVictim"] == "/find/by/victim"), "Expected object to be equal"
+    assert (response_payload[0]["Pages"][0]["FindReportByWitness"] == "/find/by/witness"), "Expected object to be equal"
+    assert (response_payload[0]["Pages"][0]["HomePage"] == "/home"), "Expected object to be equal"
+    assert (response_payload[0]["Pages"][0]["Index"] == "/"), "Expected object to be equal"
+    assert (response_payload[0]["Pages"][0]["Manual"] == "/docs"), "Expected object to be equal"
+    
     assert ("status" in response_payload[1]), "Expected status attribute"
-    
-    assert (isinstance(response_payload[0]["app"], str)), "Expected app to be a string"
-    assert (isinstance(response_payload[0]["description"], str)), "Expected description to be a string"
-    assert (isinstance(response_payload[0]["founder"], str)), "Expected founder to be a string"
-    assert (isinstance(response_payload[0]["pages"], dict)), "Expected pages to be a dictionary"
-    assert (isinstance(response_payload[0]["year"], str)), "Expected year to be a string"
+    assert (isinstance(response_payload[1], dict)), "Expected status to be a dictionary"
     assert (isinstance(response_payload[1]["status"], int)), "Expected status to be an integer"
-    
-    assert ("Guide / Manual" in response_payload[0]["pages"]), "Expected Guide / Manual attribute"
-    assert ("Home Page" in response_payload[0]["pages"]), "Expected Home Page attribute"
-    assert ("Introduction" in response_payload[0]["pages"]), "Expected Introduction attribute"
-    
-    assert (response_payload[0]["app"] == "Stop Search UK"), "Expected app attribute to be equal to \'Stop Search UK\'"
-    assert (response_payload[0]["founder"] == "Akoto Tech"), "Expected founder attribute to be equal to \'Akoto Tech\'"
-    assert (response_payload[0]["year"] == "2024"), "Expected year attribute to be equal to \'2024\'"
+    assert (response_payload[1]["status"] == 200), "Expected object to be equal"

@@ -5,16 +5,28 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     pages = {
-        "Introduction": "/",
-        "Guide / Manual": "/docs",
-        "Home Page": "/home",
+        "0": "/",
+        "1": "/docs",
+        "2": "/home",
+        "3": "/create/report/",
+        "4": "/find/by/victim",
+        "5": "/find/by/witness"
     }
     info = {
-        "app": "Stop Search UK",
-        "year": "2024",
-        "description": "An app developed to record and report incidents between the police and the public.",
-        "founder": "Akoto Tech",
-        "pages": pages
+        "App": "StopSearch UK",
+        "Year": "2024",
+        "Description": "An app developed to record and report incidents between the police and the public.",
+        "Founder": "Daniella Rose + Akoto Tech",
+        "AppPage": "/",
+        "Pages": [
+            {
+                "Index": pages["0"],
+                "Manual": pages["1"],
+                "HomePage": pages["2"],
+                "CreateReport": pages["3"],
+                "FindReportByVictim": pages["4"],
+                "FindReportByWitness": pages["5"],
+            }
+        ]
     }
-    
     return jsonify(info, {"status": 200})
