@@ -39,9 +39,16 @@ def create_new_report(formType: str, formDate: str) -> list[dict]:
     app_pages["AppPages"].append(appPages)
     
     user_report_data = {
-        "userReportData": []
+        "UserReportData": []
     }
-    user_report_data["userReportData"].append(formType_)
-    user_report_data["userReportData"].append(formDate_)
+    form_type = {
+        "FormType": formType_
+    }
+    user_report_data["UserReportData"].append(form_type)
     
-    return jsonify(app_data, app_pages, user_report_data )
+    form_date = {
+        "FormDate": formDate_
+    }
+    user_report_data["UserReportData"].append(form_date)
+    
+    return jsonify(app_data, app_pages, status, user_report_data )
