@@ -8,7 +8,7 @@ app = Flask(__name__)
 # default None/NULL data as 'Unknown' string
 
 @app.route("/home")
-def home():
+def home() -> list[dict]:
     app_data = {
         "AppData": []
     }

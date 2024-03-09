@@ -1,9 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route("/docs")
-def manual() -> list[dict]:
+@app.route("/create/new/<formType>/<formDate>", methods=["GET"])
+def create_new_report(formType: str, formDate: str) -> list[dict]:
+    formType_ = formType
+    # .form.get("formType")
+    formDate_= formDate
     app_data = {
         "AppData": []
     }
@@ -35,5 +38,10 @@ def manual() -> list[dict]:
     }
     app_pages["AppPages"].append(appPages)
     
+    user_report_data = {
+        "userReportData": []
+    }
+    user_report_data["userReportData"].append(formType_)
+    user_report_data["userReportData"].append(formDate_)
     
-    return jsonify(app_data, app_pages, status)
+    return jsonify(app_data, app_pages, user_report_data )
