@@ -5,18 +5,50 @@ app = Flask(__name__)
 # picture the ReportData being used to show the user data
 # if button is pressed then enter data in dict obj provided
 # Example: PoliceOfficerInfo
-# default None/NULL data as 'Unknown' string 
+# default None/NULL data as 'Unknown' string
 
 @app.route("/home")
 def home():
-    pages = {
-        "0": "/",
-        "1": "/docs",
-        "2": "/home",
-        "3": "/create/report/",
-        "4": "/find/by/victim",
-        "5": "/find/by/witness"
+    app_data = {
+        "AppData": []
     }
+    app_pages = {
+        "AppPages": []
+    }
+    status = {
+        "Status": 200
+    }
+    report_data = {
+        "ReportData": []
+    }
+    police_info = {
+        "PoliceInformation": [
+            "Infomration on the police officers and their conduct at the scene of the incident",
+        ]
+    }
+    
+    # add data to AppData
+    appData = {
+        "App": "StopSearch UK",
+        "AppPage": "/",
+        "Description": "An app developed to record and report incidents between the police and the public.",
+        "Founder": "Daniella Rose + Akoto Tech",
+        "Year": "2024",
+    }
+    app_data["AppData"].append(appData)
+    
+    # add data to AppPages
+    appPages = {
+        "Index": "/",
+        "Manual": "/docs",
+        "HomePage": "/home",
+        "CreateReport": "/create/report",
+        "FindReportByVictim": "/find/by/victim",
+        "FindReportByWitness": "/find/by/witness",
+    }
+    app_pages["AppPages"].append(appPages)
+    
+    # add FormType to ReportData
     form_type = {
         "FormType": [
             "FormType drop down options",
@@ -26,6 +58,9 @@ def home():
             }
         ] 
     }
+    report_data["ReportData"].append(form_type)
+    
+    # add FormDate to ReportData
     form_date = {
         "FormDate": [
             "FormDate drop down options",
@@ -36,33 +71,43 @@ def home():
             {
                 "formattedDate": {
                     "formDate": "Date in verbose format: 1st - 31st",
-                    "formMonth": "Month in a verbose format January: - Deceember",
+                    "formMonth": "Month in a verbose format January: - December",
                     "formYear": "Full format of year: 2024",
                     "formTime": "Time of when inicent occured",
                 }
             }
         ]
     }
+    report_data["ReportData"].append(form_date)
+    
+    # add IncidentLocation to ReportData
     incident_location = {
-        "IncidentLocation": {
-            "eneterAddress": [
-                "enterAddress drop down options",
-                {
-                    "0": "automaticAddress",
-                    "1": "manualAddress",
-                }
-            ],
-            "automaticAddress": "Automatically obtain the users address from their phones IP address",
-            "manualAddress": [
-                "Manually enter the address of the incident",
-                {
-                    "StreetName": "Enter street name and town or city of where the incident occured.",
-                    "TownOrCity": "Enter name of town or city of the incident",
-                    "Postcode": "Enter the postcode of the incident",
-                }
-            ]
-        }
+        "IncidentLocation": [
+            "Automatically obtain the users address from their phones IP address",
+            {
+                "addressOptions": [
+                    "addressOptions drop down options",
+                   {
+                        "0": "automaticAddress",
+                        "1": "manualAddress",
+                    } 
+                ]
+            },
+            {
+                "manualAddress": [
+                    "Manually enter the address of the incident",
+                    {
+                        "StreetName": "Enter street name and town or city of where the incident occured.",
+                        "TownOrCity": "Enter name of town or city of the incident",
+                        "Postcode": "Enter the postcode of the incident",
+                    }
+                ]
+            },
+        ]
     }
+    report_data["ReportData"].append(incident_location)
+    
+    # add SearchReason to ReportData
     search_reason = {
         "SearchReason": [
             "SearchReason drop down options",
@@ -78,6 +123,9 @@ def home():
             }
         ]
     }
+    report_data["ReportData"].append(search_reason)
+    
+    # add NumberOfVictims to ReportData
     number_of_victims = {
         "NumberOfVictims": [
             "NumberOfVictims drop down options",
@@ -98,6 +146,9 @@ def home():
             }
         ]
     }
+    report_data["ReportData"].append(number_of_victims)
+    
+    # add NumberOfPolice to PoliceInformation
     number_of_police = {
         "NumberOfPolice": [
             "NumberOfPolice drop down options",
@@ -113,6 +164,9 @@ def home():
             }
         ]
     }
+    police_info["PoliceInformation"].append(number_of_police)
+    
+    # add TypeOfSearch to PoliceInformation
     type_of_search = {
         "TypeOfSearch": [
             "TypeOfSearch drop down options",
@@ -123,34 +177,52 @@ def home():
             }
         ]
     }
+    police_info["PoliceInformation"].append(type_of_search)
+    
+    # add PoliceOfficerInformation to PoliceInformation
     police_officer_information = {
-        "PoliceOfficerInformation": {
-            "additionalOfficerData": [
-                "additionalOfficerData drop down options",
-                {
-                    "0": "Unknown",
-                    "1": "additionalOfficers",
-                }
-            ],
-            "Unknown": "Leave 'additionalOfficers' empty",
-            "enterPoliceInfo": [
-                "Enter the police officer's badge number, name & station",
-                {
-                    "PoliceBadgeNumber": "Enter police officer's badge number if available",
-                    "PoliceOfficerName": "Enter police officer's name if available",
-                    "PoliceStation": "Enter the police officer's station if available",
-                }
-            ]
+        "PoliceOfficerInformation": [
+            "Functionality to record single or multiple police officers",
+            {
+                "additionalOfficerData": [
+                    "additionalOfficerData drop down options",
+                    {
+                        "0": "Unknown",
+                        "1": "additionalOfficers",
+                    }
+                ],
             },
-            "additionalOfficers": [
-                "Any additional police officer data is extended to enterPoliceInfo list",
-                {
-                    "PoliceBadgeNumber": "...",
-                    "PoliceOfficerName": "...",
-                    "PoliceStation": "..."
-                }
-            ]
-        }
+            {
+                "Unknown": "Leave additionalOfficers empty",
+            },
+            {
+                "enterPoliceInfo": [
+                    "Enter the police officer's badge number, name & station",
+                    {
+                        "PoliceBadgeNumber": "Enter police officer's badge number if available",
+                        "PoliceOfficerName": "Enter police officer's name if available",
+                        "PoliceStation": "Enter the police officer's station if available",
+                    }
+                ]
+            },
+            {
+                "additionalOfficers": [
+                    "Any additional police officer data is extended to enterPoliceInfo list",
+                    {
+                        "PoliceBadgeNumber": "...",
+                        "PoliceOfficerName": "...",
+                        "PoliceStation": "..."
+                    }
+                ]
+            }
+        ]
+    }
+    police_info["PoliceInformation"].append(police_officer_information)
+    
+    # add PoliceInformation to ReportData
+    report_data["ReportData"].append(police_info)
+    
+    # add VictimAge to ReportData
     victim_age = {
         "VictimAge": [
             "VictimAge drop down options",
@@ -167,6 +239,9 @@ def home():
             }
         ]
     }
+    report_data["ReportData"].append(victim_age)
+    
+    # add VictimGender to ReportData
     victim_gender = {
         "VictimGender": [
             "VictimGender drop down options",
@@ -180,6 +255,9 @@ def home():
             }
         ]
     }
+    report_data["ReportData"].append(victim_gender)
+    
+    # add VictimRace to ReportData
     victim_race = {
         "VictimRace": [
             "VictimRace drop down options",
@@ -193,23 +271,34 @@ def home():
             }
         ]
     }
+    report_data["ReportData"].append(victim_race)
+    
+    # add AddNotes to ReportData
     add_notes = {
-        "AddNotes": {
-            "additionalNotes": [
-                "additionalNotes drop down options",
-                {
-                    # default set to No if
-                    "0": "No",
-                    "1": "reportNotes",
-                }
-            ], 
-            "reportNotes": [
-                {
-                    "notes": "Additional notes goes here if possible"
-                }
-            ]
-        }
+        "AddNotes": [
+            "Option to add additional notes to the report",
+            {
+                "reportNotes": [
+                    {
+                        "notes": "Additional notes goes here if possible"
+                    }
+                ]
+            },
+            {
+                "additionalNotes": [
+                    "additionalNotes drop down options",
+                    {
+                        # default set to No if
+                        "0": "No",
+                        "1": "reportNotes",
+                    }
+                ], 
+            },
+        ]
     }
+    report_data["ReportData"].append(add_notes)
+    
+    # add ReportEmail to ReportData
     report_email = {
         "ReportEmail": [
             "User must enter their email to validate the report",
@@ -218,42 +307,8 @@ def home():
             }
         ]
     }
+    report_data["ReportData"].append(report_email)
     
     
     
-    home = {
-        "App": "StopSearch UK",
-        "Year": "2024",
-        "Description": "An app developed to record and report incidents between the police and the public.",
-        "Founder": "Daniella Rose + Akoto Tech",
-        "AppPage": "/home",
-        "Pages": [
-            {
-                "Index": pages["0"],
-                "Manual": pages["1"],
-                "HomePage": pages["2"],
-                "CreateReport": pages["3"],
-                "FindReportByVictim": pages["4"],
-                "FindReportByWitness": pages["5"],
-            }
-        ],
-        "ReportData": [
-            "Complete the following questions on the report page.",
-            form_type,
-            form_date,
-            incident_location,
-            search_reason,
-            number_of_victims,
-            number_of_police,
-            type_of_search,
-            police_officer_information,
-            victim_age,
-            victim_gender,
-            victim_race,
-            add_notes,
-            report_email
-        ],
-        
-    }
-    status = {"status": 200}
-    return jsonify(home, status)
+    return jsonify(app_data, app_pages, status, report_data)

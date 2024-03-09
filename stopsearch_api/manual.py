@@ -4,31 +4,36 @@ app = Flask(__name__)
 
 @app.route("/docs")
 def manual():
-    pages = {
-        "0": "/",
-        "1": "/docs",
-        "2": "/home",
-        "3": "/create/report/",
-        "4": "/find/by/victim",
-        "5": "/find/by/witness"
+    app_data = {
+        "AppData": []
     }
-    create_report = {}
-    find_report_by_age = {}
-    documentation = {
+    app_pages = {
+        "AppPages": []
+    }
+    status = {
+        "Status": 200
+    }
+    
+    # add data to AppData
+    appData = {
         "App": "StopSearch UK",
-        "Year": "2024",
+        "AppPage": "/",
         "Description": "An app developed to record and report incidents between the police and the public.",
         "Founder": "Daniella Rose + Akoto Tech",
-        "AppPage": "/docs",
-        "Pages": [
-            {
-                "Index": pages["0"],
-                "Manual": pages["1"],
-                "HomePage": pages["2"],
-                "CreateReport": pages["3"],
-                "FindReportByVictim": pages["4"],
-                "FindReportByWitness": pages["5"],
-            }
-        ]
+        "Year": "2024",
     }
-    return jsonify(documentation, {"status": 200})
+    app_data["AppData"].append(appData)
+    
+    # add data to AppPages
+    appPages = {
+        "Index": "/",
+        "Manual": "/docs",
+        "HomePage": "/home",
+        "CreateReport": "/create/report",
+        "FindReportByVictim": "/find/by/victim",
+        "FindReportByWitness": "/find/by/witness",
+    }
+    app_pages["AppPages"].append(appPages)
+    
+    
+    return jsonify(app_data, app_pages, status)
