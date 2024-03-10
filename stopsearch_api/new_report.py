@@ -2,8 +2,8 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route("/create/new/<formType>/<formDate>", methods=["GET"])
-def create_new_report(formType: str, formDate: str) -> list[dict]:
+@app.route("/new/<formType>/<formDate>", methods=["GET"])
+def new_report(formType: str, formDate: str) -> list[dict]:
     formType_ = formType
     # .form.get("formType")
     formDate_= formDate

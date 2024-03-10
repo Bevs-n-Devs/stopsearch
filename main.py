@@ -3,7 +3,7 @@ from flask import Flask
 from stopsearch_api.index import index
 from stopsearch_api.manual import manual
 from stopsearch_api.home import home
-from stopsearch_api.create_report import create_new_report
+from stopsearch_api.new_report import new_report
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.route("/")(index)
 app.route("/docs")(manual)
 app.route("/home")(home)
-app.route("/create/new/<formType>/<formDate>")(create_new_report)
+app.route("/new/<formType>/<formDate>")(new_report)
 
 if __name__ == "__main__":
     app.run(
