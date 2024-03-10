@@ -49,7 +49,7 @@ def home() -> list[dict]:
     }
     
     report_email = {
-        "reportEmail": "The user needs to enter an email to start the report"
+        "ReportEmail": "The user needs to enter an email to start the report"
     }
     data["Data"].append(report_email)
     

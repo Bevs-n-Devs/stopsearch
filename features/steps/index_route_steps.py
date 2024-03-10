@@ -14,7 +14,7 @@ def index_route_request(context):
         context.http_response = context.client.get(context.endpoint_url)
 
 
-@then("the AppData information should be in the response")
+@then("the AppData information should be in the response.")
 def step_impl(context):
     with app.app_context():
         context.response_payload = json.loads(context.http_response.data)
@@ -46,7 +46,7 @@ def step_impl(context):
         assert (response_payload["AppData"][0]["Year"] == "2024"), "Expected both objects to be equal"
 
 
-@then("the AppPages information should be in the response")
+@then("the AppPages information should be in the response.")
 def step_impl(context):
     with app.app_context():
         context.response_payload = json.loads(context.http_response.data)
@@ -81,7 +81,7 @@ def step_impl(context):
         assert (response_payload["AppPages"][0]["FindReportByWitness"] == "/find/by/witness"), "Expected both objects to be equal"
         
 
-@then("the status code data should be in the response")
+@then("the status code data should be in the response.")
 def step_impl(context):
     with app.app_context():
         context.response_payload = json.loads(context.http_response.data)
