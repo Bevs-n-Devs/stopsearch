@@ -34,7 +34,7 @@ def home() -> list[dict]:
         "Index": "/",
         "Manual": "/docs",
         "HomePage": "/home",
-        "CreateReport": "/create/report",
+        "CreateReport": "/new/",
         "FindReportByVictim": "/find/by/victim",
         "FindReportByWitness": "/find/by/witness",
     }
@@ -47,6 +47,12 @@ def home() -> list[dict]:
     data = {
         "Data": []
     }
+    
+    report_email = {
+        "reportEmail": "The user needs to enter an email to start the report"
+    }
+    data["Data"].append(report_email)
+    
     # reported_by is linked to data
     reported_by = {
         "ReportedBy": [
@@ -103,10 +109,11 @@ def home() -> list[dict]:
             },
             {
                 "formattedDate": {
-                    "formDate": "Date in verbose format: 1st - 31st",
-                    "formMonth": "Month in a verbose format January: - December",
-                    "formYear": "Full format of year: 2024",
-                    "formTime": "Time of when inicent occured",
+                    "formattedDate": "Converted DateTime object to date in as integer: 01 - 31",
+                    "formattedWeekday": "Converted DateTime object to day of the week as string: Mon - Sun",
+                    "formMonth": "Converted DateTime object to month as a string: Jan - Dec",
+                    "formYear": "Convert the DateTime object to year as string: 2024",
+                    "formTime": "Convert the DateTime object to time as string: 07:06:05",
                 }
             }
         ]
@@ -114,15 +121,15 @@ def home() -> list[dict]:
     reported_by["ReportedBy"].append(form_date)
     
     # add ReportEmail to Data[0]["ReportedBy"]
-    report_email = {
-        "ReportEmail": [
+    confirm_email = {
+        "ConfirmEmail": [
             "User must enter their email to validate the report",
             {
-                "reportEmail": "An email needs to be entered to validate the report"
+                "confirmEmail": "The email needs to match Data[0]['reportEmail'] to validate the report"
             }
         ]
     }
-    reported_by["ReportedBy"].append(report_email)
+    reported_by["ReportedBy"].append(confirm_email)
     
     # add NumberOfVictims to Data[1]["Victiminformation"]
     number_of_victims = {

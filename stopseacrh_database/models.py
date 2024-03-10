@@ -8,6 +8,7 @@ class Data(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     # add reportID, authenticationKey etc here for later
     # foreign keys to create relationships with other tables
+    reportEmail = Column(String(10), nullable=False, unique=False)
     reportedBy = relationship('ReportedBy', backref='reportedBy')
     victimInformation = relationship('VictimInformation', backref='victimInformation')
     policePublicRelations = relationship('PolicePublicRelations', backref='policePublicRelations')
@@ -18,9 +19,10 @@ class Data(Base):
 class ReportedBy(Base):
     __tablename__ = 'ReportedBy'
     id = Column(Integer, primary_key=True, autoincrement=True)
+    confirmEmail = Column(String(10), nullable=False, unique=False)
     formType = relationship('FormType', backref='formType')
     formDate = relationship('FormDate', backref='formDate')
-    reportEmail = relationship('FormDate', backref='reportEmail')
+    
     data_ID = Column(Integer, ForeignKey('Data.id'))
 
 class VictimInformation(Base):
@@ -45,6 +47,7 @@ class PoliceInformation(Base):
     __tablename__ = 'PoliceInformation'
     id = Column(Integer, primary_key=True, autoincrement=True)
     numberOfPolice = Column(String(8), nullable=False)
+    obtainPoliceInfo = Column(String(1), nullable=False)
     policeOfficerInformation = relationship('PoliceOfficerInformation', backref='policeOfficerInformation')
     additionalOfficers = relationship('AdditionalOfficers', backref='additionalOfficers')
     data_ID = Column(Integer, ForeignKey('Data.id'))
@@ -62,6 +65,7 @@ class FormDate(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     formDate = Column(DateTime, nullable=False)
     formattedDate = Column(String(4), nullable=False)
+    formattedWeekday = Column(String(9), nullable=False)
     formattedMonth = Column(String(9), nullable=False)
     formattedYear = Column(String(4), nullable=False)
     formattedTime = Column(String(8), nullable=False)
@@ -82,9 +86,9 @@ class IncidentAddress(Base):
 class PoliceOfficerInformation(Base):
     __tablename__ = 'PoliceOfficerInformation'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    policeBadgeNumber =  Column(String(1), nullable=False)
-    policeOfficerName =  Column(String(1), nullable=True)
-    policeStation =  Column(String(1), nullable=True)
+    policeBadgeNumber =  Column(String(10), nullable=False)
+    policeOfficerName =  Column(String(50), nullable=True)
+    policeStation =  Column(String(50), nullable=True)
     additionalOfficers = Column(String(1), nullable=False) # this is drop down option if they got more than 1 PC details 
     additionalOfficer = relationship('AdditionalOfficer', backref='additionalOfficer')
     policeInformation_ID = Column(Integer, ForeignKey('PoliceInformation.id'))
@@ -92,9 +96,9 @@ class PoliceOfficerInformation(Base):
 class AdditionalOfficer(Base):
     __tablename__ = 'AdditionalOfficer'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    policeBadgeNumber =  Column(String(1), nullable=False)
-    policeOfficerName =  Column(String(1), nullable=True)
-    policeStation =  Column(String(1), nullable=True)
+    policeBadgeNumber =  Column(String(10), nullable=True)
+    policeOfficerName =  Column(String(50), nullable=True)
+    policeStation =  Column(String(50), nullable=True)
     additionalOfficers = Column(String(1), nullable=False) # this is drop down option if they got more than 1 PC details
     policeInformation_ID = Column(Integer, ForeignKey('PoliceInformation.id'))
     policeOfficerInformation_ID = Column(Integer, ForeignKey('PoliceOfficerInformation.id')) # this links primaray officer to addittional officer for each case

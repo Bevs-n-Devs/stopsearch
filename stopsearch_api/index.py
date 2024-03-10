@@ -29,7 +29,7 @@ def index() -> list[dict]:
         "Index": "/",
         "Manual": "/docs",
         "HomePage": "/home",
-        "CreateReport": "/create/report",
+        "CreateReport": "/new/",
         "FindReportByVictim": "/find/by/victim",
         "FindReportByWitness": "/find/by/witness",
     }
