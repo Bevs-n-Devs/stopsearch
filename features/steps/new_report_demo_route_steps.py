@@ -10,45 +10,18 @@ def step_impl(context):
 @when("a request is made to the NewReportDemo route")
 def step_impl(context):
     with app.app_context():
-        context.endpoint_url = "/new/"
+        context.endpoint_url = "/demo"
         context.http_response = context.client.get(context.endpoint_url)
 
-@then("the UserReportData should be in the response.")
-def step_impl(context):
-    with app.app_context:
-        pass
-
-@then("the ReportEmail data object should be in the response payload in the expectd format.")
+@then("a Message should be in the response.")
 def step_impl(context):
     with app.app_context():
-        pass
-    
-@then("the ConfirmationEmail data object should also be in the response payload in the expected format.")
-def step_impl(context):
-    with app.app_context():
-        pass
-
-@then("the ReportEmail and ConfirmationEmail should be the same in the response payload.")
-def step_impl(context):
-    with app.app_context():
-        pass
-    
-@then("the ReportedBy data object should be in the response payload in the expectd format.")
-def step_impl(context):
-    with app.app_context():
-        pass
-
-@then("the VictimInfomation data object should be in the response payload in the expected format.")
-def step_impl(context):
-    with app.app_context():
-        pass
-
-@then("the PolicePublicRelations data object should be in the response payload in the expectd format.")
-def step_impl(context):
-    with app.app_context():
-        pass
-
-@then("the PoliceInformation data object should be in the response payload in the expectd format.")
-def step_impl(context):
-    with app.app_context():
-        pass
+        context.response_payload = json.loads(context.http_response.data)
+        response_payload = context.response_payload[3]
+        
+        print(response_payload)
+        assert (isinstance(context.response_payload, list)), "Expected object to be a list"
+        assert (isinstance(response_payload, dict)), "Expected response_payload to be a dictionary"
+        
+        assert ("Message" in response_payload), "Expected Message attribute"
+        

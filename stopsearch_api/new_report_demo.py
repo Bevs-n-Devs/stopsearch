@@ -121,9 +121,10 @@ def new_report_demo() -> list[dict]:
         "Index": "/",
         "Manual": "/docs",
         "HomePage": "/home",
-        "CreateReport": "/new/",
-        "FindReportByVictim": "/find/by/victim",
-        "FindReportByWitness": "/find/by/witness",
+        "CreateReportDemo": "/new/",
+        "Demo": "/demo",
+        "SearchAll": "/search/all",
+        "SearchByID": "/search/1"
     }
     app_pages["AppPages"].append(appPages)
     
