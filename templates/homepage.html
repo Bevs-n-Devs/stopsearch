@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<form action="{{ url_for('report_page') }}" method="post">
+<form action="{{ url_for('report_page') }}" method="POST">
     <h1>Stop Search UK</h1>
     <div class="form-group">
         <p>Please enter your email to start the report.</p>
@@ -37,9 +37,9 @@
         <label for="manualAddress">Manual address</label>
         <br>
         <label for="streetName">Street Name</label>
-        <input type="text" id="streetName" name="streetName" class="form-control">
+        <input type="text" id="streetName" name="street_name" class="form-control">
         <label for="townOrCity">Town or City</label>
-        <input type="text" id="townOrCity" nam=e"townOrCity" class="form-control">
+        <input type="text" id="townOrCity" nam=e"town_or_city" class="form-control">
         <label for="postcode">Postcode</label>
         <input type="text" id="postcode" nam=e"postcode" class="form-control">
     </div>
