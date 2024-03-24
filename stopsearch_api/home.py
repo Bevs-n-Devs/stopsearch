@@ -185,6 +185,9 @@ def home() -> list[dict]:
                 "3": "Non-binary",
                 "4": "Trans",
                 "5": "A group of mixed genders",
+                "6": "Group of men",
+                "7": "Group of women",
+                "8": "Group from LGBT community"
             }
         ]
     }
@@ -201,6 +204,11 @@ def home() -> list[dict]:
                 "3": "Black",
                 "4": "Mixed race",
                 "5": "White",
+                "6": "A group of different races",
+                "7": "Group of Arab people",
+                "8": "Group of Asian people",
+                "9": "Group of Black people",
+                "10": "Group of White people",
             }
         ]
     }

@@ -16,3 +16,4 @@ Feature: Test SearchByIDRoute route
     Examples:
         | data_id |
         | 1       |
+        | 3       |

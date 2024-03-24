@@ -32,7 +32,8 @@ def index() -> list[dict]:
         "CreateReportDemo": "/new/",
         "Demo": "/demo",
         "SearchAll": "/search/all",
-        "SearchByID": "/search/1"
+        "SearchByID": "/search/1",
+        "ReportPage": "/report"
     }
     app_pages["AppPages"].append(appPages)
     
