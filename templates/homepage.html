@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<form action="{{ url_for('report_page') }}" method="POST">
+<form action="/report" method="POST">
     <h1>Stop Search UK</h1>
     <div class="form-group">
         <p>Please enter your email to start the report.</p>
@@ -19,10 +19,10 @@
     </div>
     <div class="form-group">
         <p>Are you a.. </p>
-        <input type="radio" id="victim" name="form_type" value={{  form_type_options["0"] }} required>
-        <label for="victim">{{  form_type_options["0"] }}</label><br>
-        <input type="radio" id="witness" name="form_type" value={{ form_type_options["1"] }} required>
-        <label for="witness">{{ form_type_options["1"] }}</label>
+        <input type="radio" id="victim" name="form_type" value="victim" required>
+        <label for="victim">Victim</label><br>
+        <input type="radio" id="witness" name="form_type" value="witness" required>
+        <label for="witness">Witness</label>
     </div>
     <div class="form-group">
         <label for="form_date">Report Date</label>
@@ -31,9 +31,9 @@
 
     <div class="form-group">
         <p>Where did this happen?</p>
-        <input type="radio" id="automaticAddress" name="get_address" value={{  location_options["0"] }} required>
+        <input type="radio" id="automaticAddress" name="get_address" value="automaticAddress" required>
         <label for="automaticAddress">Automatic address</label><br>
-        <input type="radio" id="manualAddress" name="get_address" value={{ location_options["1"] }} required>
+        <input type="radio" id="manualAddress" name="get_address" value="manualAddress" required>
         <label for="manualAddress">Manual address</label>
         <br>
         <label for="streetName">Street Name</label>
@@ -49,19 +49,19 @@
         <label for="number_of_victims_dropdown">Victims involved: </label>
         <select id="number_of_victims_dropdown" name="number_of_victims" required>
             <option value="">Please select</option>
-            <option value="{{ num_victims_dropdown['0'] }}">{{ num_victims_dropdown['0'] }}</option>
-            <option value="{{ num_victims_dropdown['1'] }}">{{ num_victims_dropdown['1'] }}</option>
-            <option value="{{ num_victims_dropdown['2'] }}">{{ num_victims_dropdown['2'] }}</option>
-            <option value="{{ num_victims_dropdown['3'] }}">{{ num_victims_dropdown['3'] }}</option>
-            <option value="{{ num_victims_dropdown['4'] }}">{{ num_victims_dropdown['4'] }}</option>
-            <option value="{{ num_victims_dropdown['5'] }}">{{ num_victims_dropdown['5'] }}</option>
-            <option value="{{ num_victims_dropdown['6'] }}">{{ num_victims_dropdown['6'] }}</option>
-            <option value="{{ num_victims_dropdown['7'] }}">{{ num_victims_dropdown['7'] }}</option>
-            <option value="{{ num_victims_dropdown['8'] }}">{{ num_victims_dropdown['8'] }}</option>
-            <option value="{{ num_victims_dropdown['9'] }}">{{ num_victims_dropdown['9'] }}</option>
-            <option value="{{ num_victims_dropdown['10'] }}">{{ num_victims_dropdown['10'] }}</option>
-            <option value="{{ num_victims_dropdown['11'] }}">{{ num_victims_dropdown['11'] }}</option>
-            <option value="{{ num_victims_dropdown['12'] }}">{{ num_victims_dropdown['12'] }}</option>
+            <option value="Unknown">Unknown</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
         </select>
     </div>
 
@@ -69,14 +69,14 @@
         <p>Approximately how many police could you see?</p>
         <select class="form-control" id="visbile_police_dropdown" name="number_of_police" required>
             <option value="">Please select</option>
-            <option value="{{ num_police_dropdown["0"] }}">{{ num_police_dropdown["0"] }}</option>
-            <option value="{{ num_police_dropdown["1"] }}">{{ num_police_dropdown["1"] }}</option>
-            <option value="{{ num_police_dropdown["2"] }}">{{ num_police_dropdown["2"] }}</option>
-            <option value="{{ num_police_dropdown["3"] }}">{{ num_police_dropdown["3"] }}</option>
-            <option value="{{ num_police_dropdown["4"] }}">{{ num_police_dropdown["4"] }}</option>
-            <option value="{{ num_police_dropdown["5"] }}">{{ num_police_dropdown["5"] }}</option>
-            <option value="{{ num_police_dropdown["6"] }}">{{ num_police_dropdown["6"] }}</option>
-            <option value="{{ num_police_dropdown["7"] }}">{{ num_police_dropdown["7"] }}</option>
+            <option value="Unknown">Unknown</option>
+            <option value="1 - 2">1 - 2</option>
+            <option value="3 - 4">3 - 4</option>
+            <option value="5 - 6">5 - 6</option>
+            <option value="6+">6+</option>
+            <option value="10+">10+</option>
+            <option value="15+">15+</option>
+            <option value="Over 20">Over 20</option>
         </select>
     </div>
 
@@ -84,16 +84,16 @@
         <p>What was the reason for the stop? <p/>
             <select class="form-control" id="reason_for_search_dropdown" name="search_reason">
                 <option value="">Please select</option>
-                <option value="{{ search_reason_dropdown["0"] }}">{{ search_reason_dropdown["0"] }}</option>
+                <option value="Unknown">Unknown</option>
                 <option disabled>A police officer has the power to search someone if they have reasonable grounds:</option>
-                <option value="{{ search_reason_dropdown["1"] }}">{{ search_reason_dropdown["1"] }}</option>
-                <option value="{{ search_reason_dropdown["2"] }}">{{ search_reason_dropdown["2"] }}</option>
-                <option value="{{ search_reason_dropdown["3"] }}">{{ search_reason_dropdown["3"] }}</option>
-                <option value="{{ search_reason_dropdown["4"] }}">{{ search_reason_dropdown["4"] }}</option>
+                <option value="Suspision of drugs">Suspision of drugs</option>
+                <option value="Carrying a weapon">Carrying a weapon</option>
+                <option value="Stolen goods">Stolen goods</option>
+                <option value="Suspision of comitting a crime">Suspision of comitting a crime</option>
                 <option disabled>A police officer has the power to search without reasonable grounds if:</option>
-                <option value="{{ search_reason_dropdown["5"] }}">{{ search_reason_dropdown["5"] }}</option>
-                <option value="{{ search_reason_dropdown["6"] }}">{{ search_reason_dropdown["6"] }}</option>
-                <option value="{{ search_reason_dropdown["7"] }}">{{ search_reason_dropdown["7"] }}</option>
+                <option value="Suspision of comitting a serious or violent crime">Suspision of comitting a serious or violent crime</option>
+                <option value="History of carrying or using a weapon in the past">History of carrying or using a weapon in the past</option>
+                <option value="In a location where crime is high">In a location where crime is high</option>
             </select>
     </div>
 
@@ -101,18 +101,18 @@
         <p>How was the type of search? </p>
         <select class="form-control" id="search_type_dropdown" name="type_of_search" required>
             <option value="">Please select</option>
-            <option value="{{ type_of_search_dropdown['0'] }}">{{ type_of_search_dropdown['0'] }}</option>
-            <option value="{{ type_of_search_dropdown['1'] }}">{{ type_of_search_dropdown['1'] }}</option>
-            <option value="{{ type_of_search_dropdown['2'] }}">{{ type_of_search_dropdown['2'] }}</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Aggressive">Aggressive</option>
         </select>
     </div>
 
     <div class="form-group">
         <p>Did you get the police officer's name, badge number etc?</p>
         <label for="No">No</label>
-        <input type="radio" id="No" name="get_police_info" value={{ get_police_officer_info_options["0"] }} required><br>
+        <input type="radio" id="No" name="get_police_info" value="No" required><br>
         <label for="Yes">Yes</label>
-        <input type="radio" id="Yes" name="get_police_info" value={{ get_police_officer_info_options["1"] }} required><br>
+        <input type="radio" id="Yes" name="get_police_info" value="Yes" required><br>
     </div>
 
     <div class="form-group">
@@ -125,9 +125,9 @@
             <br>
             <p>Were there any more police officers involved?</p>
             <label for="No">No</label>
-            <input type="radio" id="No" name="additional_police_info" value={{ get_additional_police_info_options["0"] }} required><br>
+            <input type="radio" id="No" name="additional_police_info" value="No" required><br>
             <label for="Yes">Yes</label>
-            <input type="radio" id="Yes" name="additional_police_info" value={{ get_additional_police_info_options["1"] }} required><br>
+            <input type="radio" id="Yes" name="additional_police_info" value="Yes" required><br>
             <button type="button" id="addAdditionalOfficers">Add Another Badge Number</button>
         </div>
     </div>
@@ -137,15 +137,15 @@
         <label for="victim_age_dropdown">How old was the person or people involved?</label>
         <select id="victim_age_dropdown" name="victim_age">
             <option value="">Please select</option>
-            <option value="{{ victim_age_dropdown['0'] }}">{{ victim_age_dropdown['0'] }}</option>
-            <option value="{{ victim_age_dropdown['1'] }}">{{ victim_age_dropdown['1'] }}</option>
-            <option value="{{ victim_age_dropdown['2'] }}">{{ victim_age_dropdown['2'] }}</option>
-            <option value="{{ victim_age_dropdown['3'] }}">{{ victim_age_dropdown['3'] }}</option>
-            <option value="{{ victim_age_dropdown['4'] }}">{{ victim_age_dropdown['4'] }}</option>
-            <option value="{{ victim_age_dropdown['5'] }}">{{ victim_age_dropdown['5'] }}</option>
-            <option value="{{ victim_age_dropdown['6'] }}">{{ victim_age_dropdown['6'] }}</option>
-            <option value="{{ victim_age_dropdown['7'] }}">{{ victim_age_dropdown['7'] }}</option>
-            <option value="{{ victim_age_dropdown['8'] }}">{{ victim_age_dropdown['8'] }}</option>
+            <option value="Unknown">Unknown</option>
+            <option value="15 - 17">15 - 17</option>
+            <option value="18 - 24">18 - 24</option>
+            <option value="25 - 30">25 - 30</option>
+            <option value="31 - 35">31 - 35</option>
+            <option value="35+">35+</option>
+            <option value="40+">40+</option>
+            <option value="45+">45+</option>
+            <option value="50+">50+</option>
         </select>
     </div>
 
@@ -153,15 +153,15 @@
         <label for="victim_gender_dropdown">What was the gender of the person or people involved?</label>
         <select id="victim_gender_dropdown" name="victim_gender">
             <option>Please select</option>
-            <option value="{{ victim_gender_dropdown['0'] }}">{{ victim_gender_dropdown['0'] }}</option>
-            <option value="{{ victim_gender_dropdown['1'] }}">{{ victim_gender_dropdown['1'] }}</option>
-            <option value="{{ victim_gender_dropdown['2'] }}">{{ victim_gender_dropdown['2'] }}</option>
-            <option value="{{ victim_gender_dropdown['3'] }}">{{ victim_gender_dropdown['3'] }}</option>
-            <option value="{{ victim_gender_dropdown['4'] }}">{{ victim_gender_dropdown['4'] }}</option>
-            <option value="{{ victim_gender_dropdown['5'] }}">{{ victim_gender_dropdown['5'] }}</option>
-            <option value="{{ victim_gender_dropdown['6'] }}">{{ victim_gender_dropdown['6'] }}</option>
-            <option value="{{ victim_gender_dropdown['7'] }}">{{ victim_gender_dropdown['7'] }}</option>
-            <option value="{{ victim_gender_dropdown['8'] }}">{{ victim_gender_dropdown['8'] }}</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Man">Man</option>
+            <option value="Woman">Woman</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Trans">Trans</option>
+            <option value="A group of mixed genders">A group of mixed genders</option>
+            <option value="Group of men">Group of men</option>
+            <option value="Group of women">Group of women</option>
+            <option value="Group from LGBT community">Group from LGBT community</option>
         </select>
     </div>
 
@@ -169,17 +169,17 @@
         <label for="victim_race_dropdown">What is the race of the person or people involved?</label>
         <select id="victim_race_dropdown" name="victim_race">
             <option>Please select</option>
-            <option value="{{ victim_race_dropdown['0'] }}">{{ victim_race_dropdown['0'] }}</option>
-            <option value="{{ victim_race_dropdown['1'] }}">{{ victim_race_dropdown['1'] }}</option>
-            <option value="{{ victim_race_dropdown['2'] }}">{{ victim_race_dropdown['2'] }}</option>
-            <option value="{{ victim_race_dropdown['3'] }}">{{ victim_race_dropdown['3'] }}</option>
-            <option value="{{ victim_race_dropdown['4'] }}">{{ victim_race_dropdown['4'] }}</option>
-            <option value="{{ victim_race_dropdown['5'] }}">{{ victim_race_dropdown['5'] }}</option>
-            <option value="{{ victim_race_dropdown['6'] }}">{{ victim_race_dropdown['6'] }}</option>
-            <option value="{{ victim_race_dropdown['7'] }}">{{ victim_race_dropdown['7'] }}</option>
-            <option value="{{ victim_race_dropdown['8'] }}">{{ victim_race_dropdown['8'] }}</option>
-            <option value="{{ victim_race_dropdown['9'] }}">{{ victim_race_dropdown['9'] }}</option>
-            <option value="{{ victim_race_dropdown['10'] }}">{{ victim_race_dropdown['10'] }}</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Arab">Arab</option>
+            <option value="Asian">Asian</option>
+            <option value="Black">Black</option>
+            <option value="Mixed race">Mixed race</option>
+            <option value="White">White</option>
+            <option value="A group of different races">A group of different races</option>
+            <option value="Group of Arab people">Group of Arab people</option>
+            <option value="Group of Asian people">Group of Asian people</option>
+            <option value="Group of Black people">Group of Black people</option>
+            <option value="Group of White people">Group of White people</option>
         </select>
     </div>
 
@@ -189,9 +189,8 @@
         <input id="confrimEmail" mame="confirm_email" type="email" placeholder="Confirm your email..." required>
     </div>
 
-    <button class="btn btn-primary" type="submit">
-        Submit Form
-    </button>
+    <input type="submit" value="Submit">
 </form>
 
+{{ message }}
 {% endblock %}
