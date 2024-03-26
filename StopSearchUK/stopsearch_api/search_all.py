@@ -1,14 +1,9 @@
-import os
-from flask import Flask, jsonify, request
-from stopsearch_service import new_report_service
-# from stopsearch_database.extensions import LocalSession
-# from stopsearch_database.models import *
-# from datetime import datetime
-
-app = Flask(__name__)
+from flask import jsonify
+from StopSearchUK import app
+from StopSearchUK.stopsearch_service import new_report_service
 
 @app.route("/search/all", methods=["POST"]) 
-def search_all() -> list[dict]:
+def search_all_route() -> list[dict]:
     app_data = {
         "AppData": []
     }

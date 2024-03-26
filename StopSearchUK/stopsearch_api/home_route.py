@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
-
-app = Flask(__name__)
+from StopSearchUK import app
 
 # picture the ReportData being used to show the user data
 # if button is pressed then enter data in dict obj provided
@@ -8,7 +7,7 @@ app = Flask(__name__)
 # default None/NULL data as 'Unknown' string
 
 @app.route("/home")
-def home() -> list[dict]:
+def home_route() -> list[dict]:
     app_data = {
         "AppData": []
     }

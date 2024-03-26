@@ -5,3 +5,4 @@
 /.pytest_cache
 stopsearchUK_db.db
 /DEBUG
+StopSearchUK.egg-info

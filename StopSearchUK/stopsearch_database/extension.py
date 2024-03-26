@@ -27,6 +27,5 @@ Base.query = db_session.query_property()
 
 # initialise database
 def init_db():
-    import stopsearch_database.models
+    import StopSearchUK.stopsearch_database.models
     Base.metadata.create_all(bind=engine)
-    

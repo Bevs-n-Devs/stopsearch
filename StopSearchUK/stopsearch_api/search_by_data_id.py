@@ -1,14 +1,13 @@
 import os
 from flask import Flask, jsonify
 from requests import request
-from stopsearch_service import new_report_service
-from stopsearch_database.extensions import LocalSession
+from StopSearchUK import app
+from StopSearchUK.stopsearch_service import new_report_service
+from StopSearchUK.stopsearch_database.extension import LocalSession
 
-
-app =  Flask(__name__)
 
 @app.route("/search/<data_id>", methods=["POST"])
-def search_by_dataID(data_id):
+def search_by_dataID_route(data_id):
     data_id = int(data_id)
     app_data = {
         "AppData": []

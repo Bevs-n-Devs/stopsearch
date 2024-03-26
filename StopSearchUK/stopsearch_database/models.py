@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey
 from sqlalchemy.orm import relationship
-from stopsearch_database.extensions import Base
+from StopSearchUK.stopsearch_database.extension import Base
 
 # primary database table (top level - Lvl 1)
 class Data(Base):

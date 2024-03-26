@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<form action="/report" method="POST">
+<form action="{{ url_for('report_page') }}" method="post">
     <h1>Stop Search UK</h1>
     <div class="form-group">
         <p>Please enter your email to start the report.</p>

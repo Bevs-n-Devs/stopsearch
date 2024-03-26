@@ -1,12 +1,10 @@
-import os
 import logging
-import requests
 import datetime
-import utils
-from flask import Flask
+from StopSearchUK.utils import *
 from sqlalchemy import *
-from stopsearch_database.extensions import LocalSession, init_db
-from stopsearch_database.models import (
+from StopSearchUK import app
+from StopSearchUK.stopsearch_database.extension import LocalSession, init_db
+from StopSearchUK.stopsearch_database.models import (
     Data,
     ReportedBy,
     VictimInformation,
@@ -19,8 +17,6 @@ from stopsearch_database.models import (
     AdditionalOfficer,
 )
 init_db()
-
-app = Flask(__name__)
 
 # double check the foreign keys - some are not correct (from 2nd onwards)
 # check relationships (backref) in models for the correct F.keys
@@ -98,7 +94,7 @@ def create_new_form_date(form_date: datetime, report_by_id: ReportedBy) -> list[
     with app.app_context():
         session = LocalSession()
         datetime_object = form_date
-        date_list_obj = utils.convert_datetime_to_string_and_parse_object(datetime_object)
+        date_list_obj = convert_datetime_to_string_and_parse_object(datetime_object)
         
         new_form_date = FormDate(
             form_date = datetime_object,
@@ -347,6 +343,7 @@ def get_all_police_public_relations_data() -> list[PolicePublicRelations]:
     Returns PPolicePublicRelations object joined with IncidentAddress and Data.
     """
     with app.app_context():
+        print("Testing")
         session = LocalSession()
         
         sql_query = select(

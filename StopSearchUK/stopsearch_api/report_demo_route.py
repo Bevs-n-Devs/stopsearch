@@ -1,11 +1,9 @@
-import os
-from flask import Flask, jsonify, request
+from flask import jsonify
 import datetime
-
-app = Flask(__name__)
+from StopSearchUK import app
 
 @app.route("/new/", methods=["POST"])
-def new_report_demo() -> list[dict]:
+def report_demo_route() -> list[dict]:
     # add fake report params here
     # follow the same design as homepage
     report_email_ = str("someone@email.com").lower()

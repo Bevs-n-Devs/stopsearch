@@ -1,15 +1,13 @@
 # this route mimics getting data from a user to create a report in the database
 # this temp route just enters the data into the database WITHOUT doing any logic - get address coordinates etc
 
-import os
-from flask import Flask, jsonify, request
-from stopsearch_service import new_report_service
+from flask import jsonify
+from StopSearchUK import app
+from StopSearchUK.stopsearch_service import new_report_service
 from datetime import datetime
 
-app = Flask(__name__)
-
 @app.route("/demo", methods=["POST"]) 
-def demo_report() -> list[dict]:
+def demo_route() -> list[dict]:
     # pretend we have taken data from URL to create form
     reportEmail = "tikvenowe@va.bj"
     formType = "witness"
