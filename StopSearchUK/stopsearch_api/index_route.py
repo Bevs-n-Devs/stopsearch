@@ -1,9 +1,8 @@
 from flask import Flask, jsonify
+from StopSearchUK import app
 
-app = Flask(__name__)
-
-@app.route("/docs")
-def manual():
+@app.route("/")
+def index_route() -> list[dict]:
     app_data = {
         "AppData": []
     }
@@ -29,9 +28,11 @@ def manual():
         "Index": "/",
         "Manual": "/docs",
         "HomePage": "/home",
-        "CreateReport": "/create/report",
-        "FindReportByVictim": "/find/by/victim",
-        "FindReportByWitness": "/find/by/witness",
+        "CreateReportDemo": "/new/",
+        "Demo": "/demo",
+        "SearchAll": "/search/all",
+        "SearchByID": "/search/1",
+        "ReportPage": "/report"
     }
     app_pages["AppPages"].append(appPages)
     

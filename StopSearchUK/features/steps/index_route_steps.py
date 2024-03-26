@@ -14,7 +14,7 @@ def index_route_request(context):
         context.http_response = context.client.get(context.endpoint_url)
 
 
-@then("the AppData information should be in the response")
+@then("the AppData information should be in the response.")
 def step_impl(context):
     with app.app_context():
         context.response_payload = json.loads(context.http_response.data)
@@ -46,7 +46,7 @@ def step_impl(context):
         assert (response_payload["AppData"][0]["Year"] == "2024"), "Expected both objects to be equal"
 
 
-@then("the AppPages information should be in the response")
+@then("the AppPages information should be in the response.")
 def step_impl(context):
     with app.app_context():
         context.response_payload = json.loads(context.http_response.data)
@@ -62,26 +62,29 @@ def step_impl(context):
         assert ("Index" in response_payload["AppPages"][0]), "Expected Index attribute"
         assert ("HomePage" in response_payload["AppPages"][0]), "Expected HomePage attribute"
         assert ("Manual" in response_payload["AppPages"][0]), "Expected Manual attribute"
-        assert ("CreateReport" in response_payload["AppPages"][0]), "Expected CreateReport attribute"
-        assert ("FindReportByVictim" in response_payload["AppPages"][0]), "Expected FindReportByVictim attribute"
-        assert ("FindReportByWitness" in response_payload["AppPages"][0]), "Expected FindReportByWitness attribute"
+        assert ("CreateReportDemo" in response_payload["AppPages"][0]), "Expected CreateReportDemo attribute"
+        assert ("Demo" in response_payload["AppPages"][0]), "Expected Demo attribute"
+        assert ("SearchAll" in response_payload["AppPages"][0]), "Expected SearchAll attribute"
+        assert ("SearchByID" in response_payload["AppPages"][0]), "Expected SearchByID attribute"
         
         assert (isinstance(response_payload["AppPages"][0]["Index"], str)), "Expected Index to be a string"
         assert (isinstance(response_payload["AppPages"][0]["HomePage"], str)), "Expected HomePage to be a string"
         assert (isinstance(response_payload["AppPages"][0]["Manual"], str)), "Expected Manual to be a string"
-        assert (isinstance(response_payload["AppPages"][0]["CreateReport"], str)), "Expected CreateReport to be a string"
-        assert (isinstance(response_payload["AppPages"][0]["FindReportByVictim"], str)), "Expected FindReportByVictim to be a string"
-        assert (isinstance(response_payload["AppPages"][0]["FindReportByWitness"], str)), "Expected FindReportByWitness to be a string"
+        assert (isinstance(response_payload["AppPages"][0]["CreateReportDemo"], str)), "Expected CreateReport to be a string"
+        assert (isinstance(response_payload["AppPages"][0]["Demo"], str)), "Expected Demo to be a string"
+        assert (isinstance(response_payload["AppPages"][0]["SearchAll"], str)), "Expected SearchAll to be a string"
+        assert (isinstance(response_payload["AppPages"][0]["SearchByID"], str)), "Expected SearchByID to be a string"
         
         assert (response_payload["AppPages"][0]["Index"] == "/"), "Expected both objects to be equal"
         assert (response_payload["AppPages"][0]["HomePage"] == "/home"), "Expected both objects to be equal"
         assert (response_payload["AppPages"][0]["Manual"] == "/docs"), "Expected both objects to be equal"
-        assert (response_payload["AppPages"][0]["CreateReport"] == "/create/report"), "Expected both objects to be equal"
-        assert (response_payload["AppPages"][0]["FindReportByVictim"] == "/find/by/victim"), "Expected both objects to be equal"
-        assert (response_payload["AppPages"][0]["FindReportByWitness"] == "/find/by/witness"), "Expected both objects to be equal"
+        assert (response_payload["AppPages"][0]["CreateReportDemo"] == "/new/"), "Expected both objects to be equal"
+        assert (response_payload["AppPages"][0]["Demo"] == "/demo"), "Expected both objects to be equal"
+        assert (response_payload["AppPages"][0]["SearchAll"] == "/search/all"), "Expected both objects to be equal"
+        assert (response_payload["AppPages"][0]["SearchByID"] == "/search/1"), "Expected both objects to be equal"
         
 
-@then("the status code data should be in the response")
+@then("the status code data should be in the response.")
 def step_impl(context):
     with app.app_context():
         context.response_payload = json.loads(context.http_response.data)

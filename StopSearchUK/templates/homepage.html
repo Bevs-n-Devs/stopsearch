@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Stop Serch UK</title>
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+
+<form action="{{ url_for('report_page') }}" method="post">
+    <h1>Stop Search UK</h1>
+    <div class="form-group">
+        <p>Please enter your email to start the report.</p>
+        <label for="formEmail">Your email: </label>
+        <input id="formEmail" name="form_email" type="email" placeholder="Enter a valid email to start the report..." required>
+    </div>
+    <div class="form-group">
+        <p>Are you a.. </p>
+        <input type="radio" id="victim" name="form_type" value="victim" required>
+        <label for="victim">Victim</label><br>
+        <input type="radio" id="witness" name="form_type" value="witness" required>
+        <label for="witness">Witness</label>
+    </div>
+    <div class="form-group">
+        <label for="form_date">Report Date</label>
+        <input type="datetime-local" class="form-control" id="form_date" name="form_date" required>
+    </div>
+
+    <div class="form-group">
+        <p>Where did this happen?</p>
+        <input type="radio" id="automaticAddress" name="get_address" value="automaticAddress" required>
+        <label for="automaticAddress">Automatic address</label><br>
+        <input type="radio" id="manualAddress" name="get_address" value="manualAddress" required>
+        <label for="manualAddress">Manual address</label>
+        <br>
+        <label for="streetName">Street Name</label>
+        <input type="text" id="streetName" name="street_name" class="form-control">
+        <label for="townOrCity">Town or City</label>
+        <input type="text" id="townOrCity" nam=e"town_or_city" class="form-control">
+        <label for="postcode">Postcode</label>
+        <input type="text" id="postcode" nam=e"postcode" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <p>How people were involved? </p>
+        <label for="number_of_victims_dropdown">Victims involved: </label>
+        <select id="number_of_victims_dropdown" name="number_of_victims" required>
+            <option value="">Please select</option>
+            <option value="Unknown">Unknown</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <p>Approximately how many police could you see?</p>
+        <select class="form-control" id="visbile_police_dropdown" name="number_of_police" required>
+            <option value="">Please select</option>
+            <option value="Unknown">Unknown</option>
+            <option value="1 - 2">1 - 2</option>
+            <option value="3 - 4">3 - 4</option>
+            <option value="5 - 6">5 - 6</option>
+            <option value="6+">6+</option>
+            <option value="10+">10+</option>
+            <option value="15+">15+</option>
+            <option value="Over 20">Over 20</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <p>What was the reason for the stop? <p/>
+            <select class="form-control" id="reason_for_search_dropdown" name="search_reason">
+                <option value="">Please select</option>
+                <option value="Unknown">Unknown</option>
+                <option disabled>A police officer has the power to search someone if they have reasonable grounds:</option>
+                <option value="Suspision of drugs">Suspision of drugs</option>
+                <option value="Carrying a weapon">Carrying a weapon</option>
+                <option value="Stolen goods">Stolen goods</option>
+                <option value="Suspision of comitting a crime">Suspision of comitting a crime</option>
+                <option disabled>A police officer has the power to search without reasonable grounds if:</option>
+                <option value="Suspision of comitting a serious or violent crime">Suspision of comitting a serious or violent crime</option>
+                <option value="History of carrying or using a weapon in the past">History of carrying or using a weapon in the past</option>
+                <option value="In a location where crime is high">In a location where crime is high</option>
+            </select>
+    </div>
+
+    <div class="form-group">
+        <p>How was the type of search? </p>
+        <select class="form-control" id="search_type_dropdown" name="type_of_search" required>
+            <option value="">Please select</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Aggressive">Aggressive</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <p>Did you get the police officer's name, badge number etc?</p>
+        <label for="No">No</label>
+        <input type="radio" id="No" name="get_police_info" value="No" required><br>
+        <label for="Yes">Yes</label>
+        <input type="radio" id="Yes" name="get_police_info" value="Yes" required><br>
+    </div>
+
+    <div class="form-group">
+        <p>Enter the police officer's information where possible:</p>
+        <div id="badge_numbers_container">
+            <label for="police_officer_badge">Officer:</label>
+            <input type="text" id="police_officer_badge" name="police_officer_badge" placeholder="BADGE NUMBER">
+            <input type="text" id="officer_name" name="police_officer_name" placeholder="PC NAME">
+            <input type="text" id="police_station" name="police_officer_station" placeholder="POLICE STATION">
+            <br>
+            <p>Were there any more police officers involved?</p>
+            <label for="No">No</label>
+            <input type="radio" id="No" name="additional_police_info" value="No" required><br>
+            <label for="Yes">Yes</label>
+            <input type="radio" id="Yes" name="additional_police_info" value="Yes" required><br>
+            <button type="button" id="addAdditionalOfficers">Add Another Badge Number</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <br>
+        <label for="victim_age_dropdown">How old was the person or people involved?</label>
+        <select id="victim_age_dropdown" name="victim_age">
+            <option value="">Please select</option>
+            <option value="Unknown">Unknown</option>
+            <option value="15 - 17">15 - 17</option>
+            <option value="18 - 24">18 - 24</option>
+            <option value="25 - 30">25 - 30</option>
+            <option value="31 - 35">31 - 35</option>
+            <option value="35+">35+</option>
+            <option value="40+">40+</option>
+            <option value="45+">45+</option>
+            <option value="50+">50+</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="victim_gender_dropdown">What was the gender of the person or people involved?</label>
+        <select id="victim_gender_dropdown" name="victim_gender">
+            <option>Please select</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Man">Man</option>
+            <option value="Woman">Woman</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Trans">Trans</option>
+            <option value="A group of mixed genders">A group of mixed genders</option>
+            <option value="Group of men">Group of men</option>
+            <option value="Group of women">Group of women</option>
+            <option value="Group from LGBT community">Group from LGBT community</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="victim_race_dropdown">What is the race of the person or people involved?</label>
+        <select id="victim_race_dropdown" name="victim_race">
+            <option>Please select</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Arab">Arab</option>
+            <option value="Asian">Asian</option>
+            <option value="Black">Black</option>
+            <option value="Mixed race">Mixed race</option>
+            <option value="White">White</option>
+            <option value="A group of different races">A group of different races</option>
+            <option value="Group of Arab people">Group of Arab people</option>
+            <option value="Group of Asian people">Group of Asian people</option>
+            <option value="Group of Black people">Group of Black people</option>
+            <option value="Group of White people">Group of White people</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <p>Please re-enter your email to complete the report.</p>
+        <label for="confrimEmail">Confirm email: </label>
+        <input id="confrimEmail" mame="confirm_email" type="email" placeholder="Confirm your email..." required>
+    </div>
+
+    <input type="submit" value="Submit">
+</form>
+
+{{ message }}
+{% endblock %}
