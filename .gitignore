@@ -1,7 +1,11 @@
 /venv
 .env
+pyvenv.cfg
 **/__pycache__
 /.vscode
 /.pytest_cache
 stopsearchUK_db.db
 /DEBUG
+/Lib
+/Scripts
+/Include

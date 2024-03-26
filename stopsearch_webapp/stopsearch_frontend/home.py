@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request, render_template, url_for
-
-app = Flask(__name__)
+from stopsearch_webapp import app
 
 @app.route("/report", methods=['POST', 'GET'])
 def report_page():

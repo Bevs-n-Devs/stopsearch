@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
-
-app = Flask(__name__)
+from stopsearch_webapp import app
 
 # picture the ReportData being used to show the user data
 # if button is pressed then enter data in dict obj provided

@@ -1,8 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 import datetime
-
-app = Flask(__name__)
+from stopsearch_webapp import app
 
 @app.route("/new/", methods=["POST"])
 def new_report_demo() -> list[dict]:

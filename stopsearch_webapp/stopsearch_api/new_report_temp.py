@@ -3,10 +3,9 @@
 
 import os
 from flask import Flask, jsonify, request
-from stopsearch_service import new_report_service
+from stopsearch_webapp import app
+from stopsearch_webapp.stopsearch_service import new_report_service
 from datetime import datetime
-
-app = Flask(__name__)
 
 @app.route("/demo", methods=["POST"]) 
 def demo_report() -> list[dict]:

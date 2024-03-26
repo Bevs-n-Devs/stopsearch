@@ -2,7 +2,7 @@ import os
 import requests
 import json
 import pytest
-from main import app
+from stopsearch_webapp import app
 
 # this creates a test client of the StopSearch API
 @pytest.fixture

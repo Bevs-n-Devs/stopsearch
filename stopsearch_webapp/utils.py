@@ -1,8 +1,8 @@
 import os
 import datetime
 from sqlalchemy import *
-from stopsearch_database.extensions import LocalSession
-from stopsearch_database.models import *
+from stopsearch_webapp.stopsearch_database.extensions import LocalSession
+from stopsearch_webapp.stopsearch_database.models import *
 
 
 def convert_datetime_to_string_and_parse_object(form_date: datetime) -> list:
