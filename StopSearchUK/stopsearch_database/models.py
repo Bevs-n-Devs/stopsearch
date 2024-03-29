@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from StopSearchUK.stopsearch_database.extension import Base
 
@@ -61,7 +61,7 @@ class FormType(Base):
 class FormDate(Base):
     __tablename__ = 'formDate'
     formDateID = Column(Integer, primary_key=True, autoincrement=True)
-    form_date = Column(DateTime, nullable=False)
+    form_date = Column(String(15), nullable=False)
     formatted_date = Column(String(4), nullable=False)
     formatted_weekday = Column(String(9), nullable=False)
     formatted_month = Column(String(9), nullable=False)
@@ -72,10 +72,12 @@ class FormDate(Base):
 class IncidentAddress(Base):
     __tablename__= 'incidentAddress'
     incidentAddressID = Column(Integer, primary_key=True, autoincrement=True)
+    address_type = Column(String(16), nullable=False)  # automaticAddress or manualAddress
     street_name = Column(String(50), nullable=False)
     town_or_city = Column(String(50), nullable=False)
     postcode = Column(String(8), nullable=True)
     country = Column(String(50), default='UK')
+    map_coordinates = relationship('MapCoordinates', backref='map_coordinates')
     policePublicRelations_ID = Column(Integer, ForeignKey('policePublicRelations.policePublicRelationsID'))
     
     
@@ -87,9 +89,16 @@ class PoliceOfficerInformation(Base):
     police_badge_number =  Column(String(10), nullable=True)
     police_officer_name =  Column(String(50), nullable=True)
     police_station =  Column(String(50), nullable=True)
-    get_additional_officers = Column(Integer, nullable=False) # 0 = False, 1 = True
+    get_additional_officers = Column(String(3), nullable=False) # yes or no
     additional_officer = relationship('AdditionalOfficer', backref='additional_officer')
     policeInformation_ID = Column(Integer, ForeignKey('policeInformation.policeInformationID'))
+    
+class MapCoordinates(Base):
+    __tablename__ = 'mapCoordinates'
+    mapCoordinatesID = Column(Integer, primary_key=True, autoincrement=True)
+    longitude = Column(Float, nullable=False)
+    latitude = Column(Float, nullable=False)
+    incidentAddressID = Column(Integer, ForeignKey('incidentAddress.incidentAddressID'))
 
 
 
