@@ -21,7 +21,13 @@ def new_report_route():
     
     reportEmail = request.args.get('reportEmail')
     formType = request.args.get('formType')
-    formDate = request.args.get('formDate')
+    # insert time, date (year is automatic)
+    # date & time can be = to 'now' which will be:
+    # datetime_obj = datetime.now(),
+    # current_date = datetime_obj.date()
+    # current_time = datetime_obj.time()
+    incidentDate = request.args.get('incidentDate')
+    incidentTime = request.args.get('incidentTime')
     confirmEmail = request.args.get('confirmEmail')
     numberOfVicims = request.args.get('numberOfVictims')
     victimAge = request.args.get('victimAge')
@@ -239,6 +245,53 @@ def new_report_route():
         # check if reportEmail & confirmEmail are equal
         if reportEmail != confirmEmail:
             return {'EmailError': 'Email does not match.'}
+        
+        # add data to ReportEmail
+        get_time = utils.convert_string_time_to_datetime_time_object_str(incidentTime)
+        get_date = utils.convert_string_date_to_datetime_date_object_str(incidentDate)
+        formatted_datetime_object = utils.convert_string_date_and_time_to_datetime_object(date_obj=get_date, time_obj=get_time)
+        report_email = {
+            'formEmail': reportEmail,
+            'confirmEmail': confirmEmail,
+            'formDate': formatted_datetime_object,
+            'formType': formType,
+            'formattedDate': get_date[2],
+            'formattedDay': get_date[0],
+            'formattedMonth': get_date[1],
+            'formattedTime': get_time,
+            'formattedYear': get_date[3]
+        }
+        result_data['ReportEmail'].append(report_email)
+        
+        # add data to VictimInformation
+        victim_info = {
+            'numberOfVictims': numberOfVicims,
+            'victimAge': victimAge,
+            'victimGender': victimGender,
+            'victimRace': victimRace,
+        }
+        result_data['VictimInformation'].append(victim_info)
+        
+        # add data to PolicePublicRelations
+        if getAddress == 'automaticAddress':
+            userIP = request.remote_addr
+            user_ip = geocoder.ip(userIP)
+            user_data = user_ip.json
+            police_public = {
+                'additionalNotes': additonalNotes,
+                'getAddress': getAddress,
+                'typeOfSearch': typeOfSearch,
+                'searchReason': searchReason,
+                'incidentStreetName': user_data['address'],
+                'incidentTownOrCity': user_data['city'],
+                'incidentCountry': user_data['country'],
+                'mapLatitude': user_ip.latlng[0],
+                'mapLongitude': user_ip.latlng[1]
+            }
+            result_data['PolicePublicRelations'].append(police_public)
+        
+        if getAddress == 'manualAddress':
+            pass
         
         
         return jsonify('hello get request, hello Yaw!')
