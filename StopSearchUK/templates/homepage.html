@@ -35,6 +35,9 @@
         <label for="automaticAddress">Automatic address</label><br>
         <input type="radio" id="manualAddress" name="get_address" value="manualAddress" required>
         <label for="manualAddress">Manual address</label>
+        {% if address_error %}
+            <p style="color:red;">{{ address_error }}</p>
+        {% endif %}
         <br>
         <label for="streetName">Street Name</label>
         <input type="text" id="streetName" name="street_name" class="form-control">
@@ -192,6 +195,9 @@
         <p>Please re-enter your email to complete the report.</p>
         <label for="confrimEmail">Your email: </label>
         <input id="confrimEmail" name="confirm_email" type="email" placeholder="Confirm your email..." required>
+        {% if email_error %}
+            <p style="color:red">{{ email_error }}</p>
+        {% endif %}
     </div>
 
     <input type="submit" value="Submit">

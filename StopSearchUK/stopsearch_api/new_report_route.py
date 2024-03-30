@@ -1,5 +1,5 @@
 from StopSearchUK import app
-from flask import jsonify, request
+from flask import jsonify, request, render_template
 from StopSearchUK.stopsearch_service import new_report_service
 import StopSearchUK.utils as utils
 from datetime import datetime
@@ -19,33 +19,34 @@ def new_report_route():
     }
     results["Results"].append(result_data)
     
-    reportEmail = request.args.get('reportEmail')
-    formType = request.args.get('formType')
+    # reportEmail = request.args.get('reportEmail') # returns None if nothing passed
+    # formType = request.args.get('formType')
     # insert time, date (year is automatic)
     # date & time can be = to 'now' which will be:
     # datetime_obj = datetime.now(),
     # current_date = datetime_obj.date()
     # current_time = datetime_obj.time()
-    incidentDate = request.args.get('incidentDate')
-    incidentTime = request.args.get('incidentTime')
-    confirmEmail = request.args.get('confirmEmail')
-    numberOfVicims = request.args.get('numberOfVictims')
-    victimAge = request.args.get('victimAge')
-    victimGender = request.args.get('victimGender')
-    victimRace = request.args.get('victimRace')
-    additonalNotes = request.args.get('additionalNotes')
-    getAddress = request.args.get('getAddress')
-    incidentCountry = request.args('incidentCountry')
-    incidentStreetName = request.args.get('incidentStreetName')
-    incidentTownOrCity = request.args.get('incidentTownOrCity')
-    searchReason = request.args.get('searchReason')
-    typeOfSearch = request.args.get('typeOfSearch')
-    getPoliceInfo = request.args.get('getPoliceInfo')
-    getAdditionalOfficers = request.args.get('getAdditionalOfficers')
-    numberOfPolice = request.args.get('numberOfPolice')
-    policeBadgeNumber = request.args.get('policeBadgeNumber')
-    policeOfficerName = request.args.get('policeOfficerName')
-    policeOfficerStation = request.args.get('policeOfficerStation')
+    
+    # incidentDate = request.args.get('incidentDate')
+    # incidentTime = request.args.get('incidentTime')
+    # confirmEmail = request.args.get('confirmEmail')
+    # numberOfVicims = request.args.get('numberOfVictims')
+    # victimAge = request.args.get('victimAge')
+    # victimGender = request.args.get('victimGender')
+    # victimRace = request.args.get('victimRace')
+    # additonalNotes = request.args.get('additionalNotes')
+    # getAddress = request.args.get('getAddress')
+    # incidentCountry = request.args('incidentCountry')
+    # incidentStreetName = request.args.get('incidentStreetName')
+    # incidentTownOrCity = request.args.get('incidentTownOrCity')
+    # searchReason = request.args.get('searchReason')
+    # typeOfSearch = request.args.get('typeOfSearch')
+    # getPoliceInfo = request.args.get('getPoliceInfo')
+    # getAdditionalOfficers = request.args.get('getAdditionalOfficers')
+    # numberOfPolice = request.args.get('numberOfPolice')
+    # policeBadgeNumber = request.args.get('policeBadgeNumber')
+    # policeOfficerName = request.args.get('policeOfficerName')
+    # policeOfficerStation = request.args.get('policeOfficerStation')
     
     if request.method == 'POST':
         # get data from form
@@ -76,7 +77,8 @@ def new_report_route():
         
         # check if email is the same
         if form_email != form_confirm_email:
-            return {'EmailError': 'Email does not match.'}
+            email_error = 'Email does not match'
+            return render_template('homepage.html', email_error=email_error)
         
         # date_time = datetime.fromtimestamp(form_date)
         get_date = utils.convert_datetime_to_string_and_parse_object(form_date=form_date)
@@ -101,15 +103,24 @@ def new_report_route():
         # get the user's address - automaticAddress or manualAddress
         if form_get_address == 'automaticAddress':
             userIP = request.remote_addr
+            print(f'user IP from request: {userIP}')
             user_ip = geocoder.ip(userIP)
+            print(f'user IP from geocoder')
+            user_data = user_ip.json
+            print(f'user data from IP: {user_data}')
+            print(user_data['ok'])
+            
+            if user_data['ok'] == False:
+                address_error = 'Please select "Manual Address" and enter the address.\n\nUnfortunately we could not get the coordinates of your location.'
+                return render_template('homepage.html', address_error=address_error)
             
             police_public = {
                 'getAddress': form_get_address,
                 'typeOfSearch': form_type_of_search,
                 'searchReason': form_search_options,
-                'incidentStreetName': user_ip[0]['address'],
-                'incidentTownOrCity': user_ip['city'],
-                'incidentCountry': user_ip['country'],
+                'incidentStreetName': user_data['address'],
+                'incidentTownOrCity': user_data['city'],
+                'incidentCountry': user_data['country'],
                 'additionalNotes': form_additional_notes,
                 'mapLatitude': user_ip.latlng[0],
                 'mapLongtitude': user_ip.latlng[1]
@@ -240,59 +251,5 @@ def new_report_route():
                 'Message': 'Your form has been saved!'
             }
             return jsonify('hello from html page', results, message)
-    if reportEmail:
-        
-        # check if reportEmail & confirmEmail are equal
-        if reportEmail != confirmEmail:
-            return {'EmailError': 'Email does not match.'}
-        
-        # add data to ReportEmail
-        get_time = utils.convert_string_time_to_datetime_time_object_str(incidentTime)
-        get_date = utils.convert_string_date_to_datetime_date_object_str(incidentDate)
-        formatted_datetime_object = utils.convert_string_date_and_time_to_datetime_object(date_obj=get_date, time_obj=get_time)
-        report_email = {
-            'formEmail': reportEmail,
-            'confirmEmail': confirmEmail,
-            'formDate': formatted_datetime_object,
-            'formType': formType,
-            'formattedDate': get_date[2],
-            'formattedDay': get_date[0],
-            'formattedMonth': get_date[1],
-            'formattedTime': get_time,
-            'formattedYear': get_date[3]
-        }
-        result_data['ReportEmail'].append(report_email)
-        
-        # add data to VictimInformation
-        victim_info = {
-            'numberOfVictims': numberOfVicims,
-            'victimAge': victimAge,
-            'victimGender': victimGender,
-            'victimRace': victimRace,
-        }
-        result_data['VictimInformation'].append(victim_info)
-        
-        # add data to PolicePublicRelations
-        if getAddress == 'automaticAddress':
-            userIP = request.remote_addr
-            user_ip = geocoder.ip(userIP)
-            user_data = user_ip.json
-            police_public = {
-                'additionalNotes': additonalNotes,
-                'getAddress': getAddress,
-                'typeOfSearch': typeOfSearch,
-                'searchReason': searchReason,
-                'incidentStreetName': user_data['address'],
-                'incidentTownOrCity': user_data['city'],
-                'incidentCountry': user_data['country'],
-                'mapLatitude': user_ip.latlng[0],
-                'mapLongitude': user_ip.latlng[1]
-            }
-            result_data['PolicePublicRelations'].append(police_public)
-        
-        if getAddress == 'manualAddress':
-            pass
-        
-        
-        return jsonify('hello get request, hello Yaw!')
+
     return jsonify('something went wrong')
