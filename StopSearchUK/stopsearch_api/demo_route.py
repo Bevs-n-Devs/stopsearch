@@ -29,15 +29,13 @@ def demo_route() -> list[dict]:
     policeStation = "Ozopazba station"
     additionalOfficers = 0
     confirmEmail = "tikvenowe@va.bj"
-    
     # only in test 
-    formDate = datetime.now()
-    formatted_date = utils.convert_datetime_to_string_and_parse_object(formDate)
+    formDate = "2024-04-11T05:46"
     
     # get API attributes and convert to correct format
     user_report_email_ = str(reportEmail).lower()
     user_form_type_ = str(formType).lower()
-    user_form_date_ = formatted_date
+    user_form_date_ = formDate
     user_num_of_victims_ = str(numberOfVictims).lower()
     user_victim_age_ = str(victimAge).lower()
     user_victim_gender_ = str(victimGender).lower()

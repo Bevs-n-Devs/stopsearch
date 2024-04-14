@@ -6,7 +6,7 @@ from StopSearchUK.stopsearch_service import new_report_service
 from StopSearchUK.stopsearch_database.extension import LocalSession
 
 
-@app.route("/search/<data_id>", methods=["POST"])
+@app.route("/search/<data_id>", methods=["GET"])
 def search_by_dataID_route(data_id):
     data_id = int(data_id)
     app_data = {
