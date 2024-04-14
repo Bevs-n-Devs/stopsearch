@@ -8,6 +8,7 @@ from StopSearchUK.stopsearch_api.search_all import search_all_route
 from StopSearchUK.stopsearch_api.report_demo_route import report_demo_route
 from StopSearchUK.stopsearch_frontend.report_page import report_page
 from StopSearchUK.stopsearch_api.new_report_route import new_report_route
+from StopSearchUK.stopsearch_frontend.map_page import stopsearch_map_page
 
 
 # backend
@@ -21,3 +22,4 @@ app.route("/search/<data_id>")(search_by_dataID_route)
 app.route("/new/report")(new_report_route)
 # frontend
 app.route("/report")(report_page)
+app.route("/map")(stopsearch_map_page)
