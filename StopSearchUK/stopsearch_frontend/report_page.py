@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, url_for
 from StopSearchUK import app
 import geocoder
-from ip2geotools.databases.noncommercial import DbIpCity
+# from ip2geotools.databases.noncommercial import DbIpCity
 
 @app.route("/report", methods=['POST', 'GET'])
 def report_page():
@@ -110,7 +110,6 @@ def report_page():
             ip = '192.168.0.126'
             # user_ip = geocoder.ip("10.143.99.108")
             user_ip = geocoder.ip(get_user_ip)
-            user_ip = geocoder.ip("8.8.8.8")
             if user_ip.ok:
                 if user_ip.latlng == []:
                     return {'GeoLocation Error': 'Could not get latitude & longitude for your current address.'}
@@ -129,7 +128,7 @@ def report_page():
             user_ip = geocoder.ip(get_user_ip)
             # get_ip = geocoder.ipinfo(location=user_ip)
         
-        # if 
+        # if s
         
         message = "POST request received and processed successfully!"
         
