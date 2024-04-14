@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, url_for
+from flask import jsonify, request, render_template, url_for
 from StopSearchUK import app
 import geocoder
 # from ip2geotools.databases.noncommercial import DbIpCity
