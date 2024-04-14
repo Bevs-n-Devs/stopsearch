@@ -399,7 +399,6 @@ def get_all_police_public_relations_data() -> list[PolicePublicRelations]:
            incidentAddress.incidentAddressID,
            incidentAddress.street_name,
            incidentAddress.town_or_city,
-           incidentAddress.postcode,
            incidentAddress.country,
            data.dataID,
            data.report_email,
@@ -409,7 +408,7 @@ def get_all_police_public_relations_data() -> list[PolicePublicRelations]:
         JOIN data
             ON policePublicRelations.policePublicRelationsID = data.dataID
     
-    Returns PPolicePublicRelations object joined with IncidentAddress and Data.
+    Returns PolicePublicRelations object joined with IncidentAddress and Data.
     """
     with app.app_context():
         print("Testing")
