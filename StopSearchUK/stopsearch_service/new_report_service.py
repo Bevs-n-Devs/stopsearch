@@ -13,6 +13,7 @@ from StopSearchUK.stopsearch_database.models import (
     FormType,
     FormDate,
     IncidentAddress,
+    FormMedia,
     MapCoordinates,
     PoliceOfficerInformation,
     AdditionalOfficer,
@@ -37,10 +38,10 @@ def create_new_report_email(email: str) -> Data:
             
             session.add(new_report_email)
             session.commit()
-        except Exception as e:
-            logging.warning(f"ERROR!! Could not create Data object: {e}")
+            return new_report_email
         
-    return new_report_email
+        except Exception as e:
+            return {'SQL Error': e}
 
 
 def create_new_report_by(confirm_email: str, new_report_email_id: Data) -> ReportedBy:
@@ -52,16 +53,19 @@ def create_new_report_by(confirm_email: str, new_report_email_id: Data) -> Repor
     """
     # check if email is valid if not return error
     with app.app_context():
-        session = LocalSession()
-        new_report_by = ReportedBy(
-            confirm_email = confirm_email.lower(),
-            reported_by = new_report_email_id,
-        )
+        try:
+            session = LocalSession()
+            new_report_by = ReportedBy(
+                confirm_email = confirm_email.lower(),
+                reported_by = new_report_email_id,
+            )
+            
+            session.add(new_report_by)
+            session.commit()
+            return new_report_by
         
-        session.add(new_report_by)
-        session.commit()
-        
-    return new_report_by
+        except Exception as e:
+            return {'SQL Error': e}
 
 
 def create_new_form_type(form_type: str, report_by_id: ReportedBy) -> list[FormType]:
@@ -72,16 +76,19 @@ def create_new_form_type(form_type: str, report_by_id: ReportedBy) -> list[FormT
     Returns an instance of FormType object.
     """
     with app.app_context():
-        session = LocalSession()
-        new_form_type = FormType(
-            form_type = form_type.lower(),
-            fType=report_by_id
-        )
+        try:
+            session = LocalSession()
+            new_form_type = FormType(
+                form_type = form_type.lower(),
+                fType=report_by_id
+            )
+            
+            session.add(new_form_type)
+            session.commit()
+            return new_form_type
         
-        session.add(new_form_type)
-        session.commit()
-        
-    return new_form_type
+        except Exception as e:
+            return {'SQL Error': e}
 
 
 def create_new_form_date(get_date: str, report_by_id: ReportedBy) -> list[FormDate]:
@@ -94,25 +101,28 @@ def create_new_form_date(get_date: str, report_by_id: ReportedBy) -> list[FormDa
     """
     import StopSearchUK.utils as utils
     with app.app_context():
-        session = LocalSession()
-        datetime_object = get_date
-        date_list_obj = utils.convert_datetime_to_string_and_parse_object(form_date=get_date)
+        try:
+            session = LocalSession()
+            datetime_object = get_date
+            date_list_obj = utils.convert_datetime_to_string_and_parse_object(form_date=get_date)
+            
+            
+            new_form_date = FormDate(
+                form_date = datetime_object[1][0],
+                formatted_date = date_list_obj[0][2],
+                formatted_weekday = date_list_obj[0][0],
+                formatted_month = date_list_obj[0][1],
+                formatted_year = date_list_obj[0][4],
+                formatted_time = date_list_obj[0][3],
+                fDate = report_by_id,
+            )
+            
+            session.add(new_form_date)
+            session.commit()
+            return new_form_date
         
-        
-        new_form_date = FormDate(
-            form_date = datetime_object[1][0],
-            formatted_date = date_list_obj[0][2],
-            formatted_weekday = date_list_obj[0][0],
-            formatted_month = date_list_obj[0][1],
-            formatted_year = date_list_obj[0][4],
-            formatted_time = date_list_obj[0][3],
-            fDate = report_by_id,
-        )
-        
-        session.add(new_form_date)
-        session.commit()
-        
-    return new_form_date
+        except Exception as e:
+            return {'SQL Error': e}
 
 
 def create_new_victim_information(num_victims: str, victim_age: str, victim_gender: str, victim_race: str, new_report_email_id: Data) -> list[VictimInformation]:
@@ -123,19 +133,22 @@ def create_new_victim_information(num_victims: str, victim_age: str, victim_gend
     Returns an instance of VictimInformation object.
     """
     with app.app_context():
-        session = LocalSession()
-        new_victim_info = VictimInformation(
-            number_of_victims = num_victims,
-            victim_age = victim_age,
-            victim_gender = victim_gender,
-            victim_race = victim_race,
-            victim_info = new_report_email_id,
-        )
+        try:
+            session = LocalSession()
+            new_victim_info = VictimInformation(
+                number_of_victims = num_victims,
+                victim_age = victim_age,
+                victim_gender = victim_gender,
+                victim_race = victim_race,
+                victim_info = new_report_email_id,
+            )
+            
+            session.add(new_victim_info)
+            session.commit()
+            return new_victim_info
         
-        session.add(new_victim_info)
-        session.commit()
-        
-    return new_victim_info
+        except Exception as e:
+            return {'SQL Error': e}
 
 
 def create_new_police_public_relations(search_reason: str, search_type: str, notes: str, new_report_email_id: Data) -> list[PolicePublicRelations]:
@@ -146,21 +159,24 @@ def create_new_police_public_relations(search_reason: str, search_type: str, not
     Returns an instance of PolicePublicRelations object.
     """
     with app.app_context():
-        session = LocalSession()
-        new_police_public_relations = PolicePublicRelations(
-            search_reason = search_reason,
-            type_of_search = search_type,
-            additional_notes = notes,
-            police_public = new_report_email_id,
-        )
-        
-        session.add(new_police_public_relations)
-        session.commit()
-        
-    return new_police_public_relations
+        try:
+            session = LocalSession()
+            new_police_public_relations = PolicePublicRelations(
+                search_reason = search_reason,
+                type_of_search = search_type,
+                additional_notes = notes,
+                police_public = new_report_email_id,
+            )
+            
+            session.add(new_police_public_relations)
+            session.commit()
+            return new_police_public_relations
+    
+        except Exception as e:
+            return {'SQL Error': e}
 
 
-def create_new_incident_address(address_type: str, street: str, town_city: str, postcode: str, police_public_id: PolicePublicRelations) -> list[IncidentAddress]:
+def create_new_incident_address(address_type: str, street: str, town_city: str, police_public_id: PolicePublicRelations) -> list[IncidentAddress]:
     """
     This records where the incident took place into the IncidentAddress table.
     Table linked to PolicePublicRelations via foreign key.
@@ -168,19 +184,21 @@ def create_new_incident_address(address_type: str, street: str, town_city: str, 
     Returns an instance of IncidentAddress object.
     """
     with app.app_context():
-        session = LocalSession()
-        new_incident_location = IncidentAddress(
-            address_type = address_type,
-            street_name = street,
-            town_or_city = town_city,
-            postcode = postcode,
-            incident_address = police_public_id,
-        )
+        try:
+            session = LocalSession()
+            new_incident_location = IncidentAddress(
+                address_type = address_type,
+                street_name = street,
+                town_or_city = town_city,
+                incident_address = police_public_id,
+            )
+            
+            session.add(new_incident_location)
+            session.commit()
+            return new_incident_location
         
-        session.add(new_incident_location)
-        session.commit()
-        
-    return new_incident_location
+        except Exception as e:
+            return {'SQL Error': e}
 
 
 def create_new_map_coordinates(lat: float, lng: float, incident_address_id: IncidentAddress) -> list[MapCoordinates]:
@@ -192,17 +210,44 @@ def create_new_map_coordinates(lat: float, lng: float, incident_address_id: Inci
     Returns an instance of MapCoordinates object.
     """
     with app.app_context():
-        session = LocalSession()
-        new_map_coordinates = MapCoordinates(
-            latitude = lat,
-            longitude = lng,
-            map_coordinates = incident_address_id,
-        )
+        try:
+            session = LocalSession()
+            new_map_coordinates = MapCoordinates(
+                latitude = lat,
+                longitude = lng,
+                map_coordinates = incident_address_id,
+            )
+            
+            session.add(new_map_coordinates)
+            session.commit()
+            return new_map_coordinates
         
-        session.add(new_map_coordinates)
-        session.commit()
+        except Exception as e:
+            return {'SQL Error': e}
+
+
+def create_new_report_media(media_path: str, police_public_id: PolicePublicRelations) -> list[FormMedia]:
+    """
+    This records any report media associated with the report.
+    Table linked to PolicePublicRelations via the foreign key.
+    
+    Returns an instance of FormMedia object.
+    """
+    with app.app_context():
+        try:
+            session = LocalSession()
+            new_form_media = FormMedia(
+                file_path = media_path,
+                form_media = police_public_id
+            )
+            
+            session.add(new_form_media)
+            session.commit()
+            return new_form_media
         
-    return new_map_coordinates
+        except Exception as e:
+            return {'SQL Error': e}
+    
 
 def create_new_police_information(num_police: str, get_police_info: int, new_report_email_id: Data) -> list[PoliceInformation]:
     """

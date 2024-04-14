@@ -4,6 +4,7 @@
 from flask import jsonify
 from StopSearchUK import app
 from StopSearchUK.stopsearch_service import new_report_service
+from StopSearchUK import utils
 from datetime import datetime
 
 @app.route("/demo", methods=["POST"]) 
@@ -15,9 +16,9 @@ def demo_route() -> list[dict]:
     victimAge = "18 - 24"
     victimGender = "female"
     victimRace = "asian"
-    incidentStreetName = "1526 Fizaj Path"
-    incidentTownOrCity = "Ekafutkof"
-    incidentPostcode = "SW19 5EL"
+    addressType = "manualaddress"  # or automaticAddress
+    incidentStreetName = "62 Broadwater Road"
+    incidentTownOrCity = "London"
     searchReason = "Suspision of Drugs"
     typeOfSearch = "aggressive"
     addNotes = "1HYNjrM5HVTbAN9tPZj0hyaLhdcomoYWGmNg0nyvH91Kr"
@@ -31,18 +32,18 @@ def demo_route() -> list[dict]:
     
     # only in test 
     formDate = datetime.now()
+    formatted_date = utils.convert_datetime_to_string_and_parse_object(formDate)
     
     # get API attributes and convert to correct format
     user_report_email_ = str(reportEmail).lower()
     user_form_type_ = str(formType).lower()
-    user_form_date_ = formDate
+    user_form_date_ = formatted_date
     user_num_of_victims_ = str(numberOfVictims).lower()
     user_victim_age_ = str(victimAge).lower()
     user_victim_gender_ = str(victimGender).lower()
     user_victim_race_ = str(victimRace).lower()
     user_street_name_ = str(incidentStreetName).lower()
     user_town_or_city_ = str(incidentTownOrCity).lower()
-    user_postcode_ = str(incidentPostcode).lower()
     user_seacrh_reason_ = str(searchReason).lower()
     user_type_of_search_ = str(typeOfSearch).lower()
     user_add_notes_ = str(addNotes).lower()
@@ -90,9 +91,9 @@ def demo_route() -> list[dict]:
         )
         
         user_incident_address = new_report_service.create_new_incident_address(
+            address_type=addressType,
             street=user_street_name_,
             town_city=user_town_or_city_,
-            postcode=user_postcode_,
             police_public_id=user_police_relations
         )
         

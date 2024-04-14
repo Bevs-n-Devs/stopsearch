@@ -1,7 +1,10 @@
+import os
 import datetime
 from dateutil import parser
 from datetime import datetime
 from sqlalchemy import *
+from StopSearchUK import app
+from werkzeug.utils import secure_filename
 
 
 def convert_datetime_to_string_and_parse_object(form_date: str) -> list:
@@ -80,3 +83,16 @@ def convert_string_date_and_time_to_datetime_object(date_obj: list, time_obj: st
         return formatted_date
     except Exception as e:
         return {'Error': str(e)}
+    
+
+def convert_form_image_to_filepath(file):
+    """
+    Converts an image from the report and saves the file path as a string.
+    """
+    if file is None:
+        raise ValueError("No file provided")
+    
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(file_path)
+    return file_path

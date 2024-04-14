@@ -19,35 +19,6 @@ def new_report_route():
     }
     results["Results"].append(result_data)
     
-    # reportEmail = request.args.get('reportEmail') # returns None if nothing passed
-    # formType = request.args.get('formType')
-    # insert time, date (year is automatic)
-    # date & time can be = to 'now' which will be:
-    # datetime_obj = datetime.now(),
-    # current_date = datetime_obj.date()
-    # current_time = datetime_obj.time()
-    
-    # incidentDate = request.args.get('incidentDate')
-    # incidentTime = request.args.get('incidentTime')
-    # confirmEmail = request.args.get('confirmEmail')
-    # numberOfVicims = request.args.get('numberOfVictims')
-    # victimAge = request.args.get('victimAge')
-    # victimGender = request.args.get('victimGender')
-    # victimRace = request.args.get('victimRace')
-    # additonalNotes = request.args.get('additionalNotes')
-    # getAddress = request.args.get('getAddress')
-    # incidentCountry = request.args('incidentCountry')
-    # incidentStreetName = request.args.get('incidentStreetName')
-    # incidentTownOrCity = request.args.get('incidentTownOrCity')
-    # searchReason = request.args.get('searchReason')
-    # typeOfSearch = request.args.get('typeOfSearch')
-    # getPoliceInfo = request.args.get('getPoliceInfo')
-    # getAdditionalOfficers = request.args.get('getAdditionalOfficers')
-    # numberOfPolice = request.args.get('numberOfPolice')
-    # policeBadgeNumber = request.args.get('policeBadgeNumber')
-    # policeOfficerName = request.args.get('policeOfficerName')
-    # policeOfficerStation = request.args.get('policeOfficerStation')
-    
     if request.method == 'POST':
         # get data from form
         form_email = request.form.get('form_email') # returns None if doesn't exist
@@ -62,6 +33,8 @@ def new_report_route():
         form_type_of_search = request.form.get('type_of_search')
         form_search_options = request.form.get('search_reason')
         form_additional_notes = request.form.get('additional_notes')
+        form_media_file = request.files.get('form_media')
+        # media_path = utils.convert_form_image_to_filepath(form_media_file)
         
         form_num_of_victims = request.form.get('number_of_victims')
         form_victim_age = request.form.get('victim_age')
@@ -103,12 +76,8 @@ def new_report_route():
         # get the user's address - automaticAddress or manualAddress
         if form_get_address == 'automaticAddress':
             userIP = request.remote_addr
-            print(f'user IP from request: {userIP}')
             user_ip = geocoder.ip(userIP)
-            print(f'user IP from geocoder')
             user_data = user_ip.json
-            print(f'user data from IP: {user_data}')
-            print(user_data['ok'])
             
             if user_data['ok'] == False:
                 address_error = 'Please select "Manual Address" and enter the address.\n\nUnfortunately we could not get the coordinates of your location.'
@@ -131,17 +100,33 @@ def new_report_route():
             # v. accurate with streetname + city/town 
             deafult_country = 'United Kingdom'
             user_cordinates = geocoder.arcgis(location=f'{form_street_name}, {form_town_or_city}, {form_postcode}, {deafult_country}')
-            police_public = {
-                'getAddress': form_get_address,
-                'typeOfSearch': form_type_of_search,
-                'searchReason': form_search_options,
-                'incidentStreetName': form_street_name,
-                'incidentTownOrCity': form_town_or_city,
-                'incidentCountry': deafult_country,
-                'additionalNotes': form_additional_notes,
-                'mapLatitude': user_cordinates.latlng[0],
-                'mapLongtitude': user_cordinates.latlng[1]
-            }
+            if form_media_file == None:
+                police_public = {
+                    'getAddress': form_get_address,
+                    'typeOfSearch': form_type_of_search,
+                    'searchReason': form_search_options,
+                    'incidentStreetName': form_street_name,
+                    'incidentTownOrCity': form_town_or_city,
+                    'incidentCountry': deafult_country,
+                    'additionalNotes': form_additional_notes,
+                    'mapLatitude': user_cordinates.latlng[0],
+                    'mapLongtitude': user_cordinates.latlng[1],
+                    'reportMedia': False
+                }
+                result_data['PolicePublicRelations'].append(police_public)
+            else:
+                police_public = {
+                    'getAddress': form_get_address,
+                    'typeOfSearch': form_type_of_search,
+                    'searchReason': form_search_options,
+                    'incidentStreetName': form_street_name,
+                    'incidentTownOrCity': form_town_or_city,
+                    'incidentCountry': deafult_country,
+                    'additionalNotes': form_additional_notes,
+                    'mapLatitude': user_cordinates.latlng[0],
+                    'mapLongtitude': user_cordinates.latlng[1],
+                    'reportMedia': utils.convert_form_image_to_filepath(form_media_file)
+                }
             result_data['PolicePublicRelations'].append(police_public)
         
         if form_get_police_info == 'No':
@@ -221,7 +206,6 @@ def new_report_route():
                 address_type=form_get_address,
                 street=form_street_name,
                 town_city=form_town_or_city,
-                postcode=form_postcode,
                 police_public_id=user_police_relations
             )
             # add map cordnates 
@@ -230,6 +214,11 @@ def new_report_route():
                 lng=float(police_public['mapLongtitude']),
                 incident_address_id=user_incident_address
             )
+            if form_media_file != None:
+                user_form_media = new_report_service.create_new_report_media(
+                    media_path=utils.convert_form_image_to_filepath(form_media_file),
+                    police_public_id=user_police_relations
+                )
             
             user_police_info = new_report_service.create_new_police_information(
                 num_police=form_num_of_police,

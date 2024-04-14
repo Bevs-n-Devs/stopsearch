@@ -40,6 +40,7 @@ class PolicePublicRelations(Base):
     type_of_search = Column(String(10), nullable=False)
     additional_notes = Column(Text, nullable=True)
     incident_address = relationship('IncidentAddress', backref='incident_address')
+    form_media = relationship('FormMedia', backref='form_media')
     data_ID = Column(Integer, ForeignKey('data.dataID'))
     
 class PoliceInformation(Base):
@@ -75,9 +76,14 @@ class IncidentAddress(Base):
     address_type = Column(String(16), nullable=False)  # automaticAddress or manualAddress
     street_name = Column(String(50), nullable=False)
     town_or_city = Column(String(50), nullable=False)
-    postcode = Column(String(8), nullable=True)
     country = Column(String(50), default='UK')
     map_coordinates = relationship('MapCoordinates', backref='map_coordinates')
+    policePublicRelations_ID = Column(Integer, ForeignKey('policePublicRelations.policePublicRelationsID'))
+
+class FormMedia(Base):
+    __tablename__ = 'formMedia'
+    formMediaID = Column(Integer, primary_key=True, autoincrement=True)
+    file_path = Column(String, nullable=True, unique=True)
     policePublicRelations_ID = Column(Integer, ForeignKey('policePublicRelations.policePublicRelationsID'))
     
     
