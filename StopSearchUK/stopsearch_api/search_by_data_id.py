@@ -89,8 +89,7 @@ def search_by_dataID_route(data_id):
             "additionalNotes": data.police_public_relations[0].additional_notes,
             "incidentStreetName": data.police_public_relations[0].incident_address[0].street_name,
             "incidentTownOrCity": data.police_public_relations[0].incident_address[0].town_or_city,
-            "incidentPostcode": data.police_public_relations[0].incident_address[0].postcode,
-            "incidentCountry": data.police_public_relations[0].incident_address[0].country,
+             "incidentCountry": data.police_public_relations[0].incident_address[0].country,
         }
         result_data["PolicePublicRelations"].append(police_public_info)
         
