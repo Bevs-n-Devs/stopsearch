@@ -62,7 +62,7 @@ class FormType(Base):
 class FormDate(Base):
     __tablename__ = 'formDate'
     formDateID = Column(Integer, primary_key=True, autoincrement=True)
-    form_date = Column(String(15), nullable=False)
+    form_date = Column(String(20), nullable=False)
     formatted_date = Column(String(4), nullable=False)
     formatted_weekday = Column(String(9), nullable=False)
     formatted_month = Column(String(9), nullable=False)
