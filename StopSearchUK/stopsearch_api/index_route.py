@@ -33,7 +33,8 @@ def index_route() -> list[dict]:
         "SearchAll": "/search/all",
         "SearchByID": "/search/1",
         "ReportPage": "/report",
-        "MapPage": "/map"
+        "MapPage": "/map",
+        "MapData": "/map-data"
     }
     app_pages["AppPages"].append(appPages)
     
