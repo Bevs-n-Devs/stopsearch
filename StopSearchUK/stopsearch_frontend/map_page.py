@@ -18,13 +18,11 @@ def stopsearch_map_page():
     if map_data_response.status_code == 200:
         # turn response into json object
         map_data = map_data_response.json()
-        # extract coordinates using list comprehension
-        coordinates = [(entry['mapLatitude'], entry['mapLongitude']) for entry in map_data[3]['MapData']]
-        # print(coordinates)
     else:
         # Handle error
-        coordinates = []
-
+        return {"Error": "Map failed to load data"}
+    
+    
 
 
     # create start location for map
@@ -34,14 +32,41 @@ def stopsearch_map_page():
     map = folium.Map(
         location=start_location,
         tiles="OpenStreetMap",
-        zoom_start=9,
+        zoom_start=7,
     )
 
-    # create frame for location data
-    html_page = 'homepage.html'
-    iframe = folium.IFrame(html=render_template(html_page), width=500, height=500)
+    # loop through map_data to display data in map
+    for data in map_data[3]['MapData']:
+        # create frame for location data
+        map_data_pinpoint = 'map_data.html'
+        iframe = folium.IFrame(
+            html=render_template(
+                map_data_pinpoint,
+                data_id=data['dataID'],
+                form_type=data['formType'],
+                formmatted_date=data['formattedDate'],
+                formatted_month=data['formattedMonth'],
+                formatted_year=data['formattedYear'],
+                formatted_time=data['formattedTime'],
+                street_name=data['streetName'],
+                town_or_city=data['townOrCity'],
+                longitude=data['mapLongitude'],
+                latitude=data['mapLatitude'],
+                victim_age=data['victimAge'],
+                victim_gender=data['victimGender'],
+                victim_race=data['victimRace'],
+                number_of_victims=data['numberOfVictims'],
+                number_of_police=data['numberOfPolice'],
+                type_of_search=data['typeOfSearch'],
+                search_reason=data['searchReason']
+
+
+            ),
+            width=500,
+            height=500
+        )
+
     popup = folium.Popup(iframe, max_width=2650)
-    # add the data to map pin
 
     # add the coodinates on the map
     for data in map_data[3]['MapData']:
