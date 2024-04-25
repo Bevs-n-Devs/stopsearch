@@ -66,12 +66,11 @@ def stopsearch_map_page():
             height=500
         )
 
-    popup = folium.Popup(iframe, max_width=2650)
+        popup = folium.Popup(iframe, max_width=2650)
 
-    # add the coodinates on the map
-    for data in map_data[3]['MapData']:
+        # add the coordinates on the map
         folium.Marker(
-            location=[data['mapLatitude'], data['mapLongitude']],
+            location=[float(data['mapLatitude']), float(data['mapLongitude'])],  # Convert to float
             popup=popup,
             icon=folium.Icon(color='blue', icon_color='red', icon='home', prefix='fa')
         ).add_to(map)
