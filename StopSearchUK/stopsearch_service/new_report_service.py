@@ -478,20 +478,56 @@ def get_all_police_information_data() -> list[PoliceInformation]:
     
 def get_all_data() -> list[Data]:
     """
-    SELECT data.dataID,
-           data.dataID,
+    SELECT data.dataID
+           formType.form_type,
+           formDate.formatted_date,
+           formDate.formatted_month,
+           formDate.formatted_year,
+           formDate.formatted_time,
+           victimInformation.number_of_victims,
+           victimInformation.victim_age,
+           victimInformation.victim_race,
+           victimInformation.victim_gender,
+           policePublicRelations.search_reason,
+           policePublicRelations.type_of_search,
+           policePublicRelations.additional_notes,
+           incidentAddress.street_name,
+           incidentAddress.town_or_city,
+           mapCoordinates.longitude,
+           mapCoordinates.latitude,
+           policeInformation.number_of_police,
+           policeInformation.obtain_police_info,
+           policeOfficerInformation.police_badge_number,
+           policeOfficerInformation.police_officer_name,
+           policeOfficerInformation.police_station,
+           policeOfficerInformation.get_additional_officers,
+           additionalOfficer.police_badge_number,
+           additionalOfficer.police_officer_name,
+           additionalOfficer.police_station,
+           additionalOfficer.get_additional_officers
     FROM data
         JOIN reportedBy
-            ON data.dataID = reportedBy.reportedByID,
+            ON data.dataID = reportedBy.reportedByID
+        JOIN formType
+            ON reportedBy.reportedByID = formType.formTypeID,
+        JOIN formDate
+            ON reportedBy.reportedByID = formDate.formDateID
         JOIN victimInformation
-            ON data.dataID = victimInformation.victimInformationID,
+            ON data.dataID = victimInformation.victimInformationID
         JOIN policePublicRelations
-            ON data.dataID = policePublicRelations.policePublicRelationsID,
+            ON data.dataID = policePublicRelationsID
+        JOIN incidentAddress
+            ON policePublicRelations.policePublicRelationsID = incidentAddress.incidentAddressID
+        JOIN mapCoordinates
+            ON incidentAddress.incidentAddressID = mapCoordinates.mapCoordinatesID
         JOIN policeInformation
-            ON data.dataID = policeInformation.policeInformationID,
-        
+            ON data.dataID = policeInformation
+        JOIN policeOfficerInformation
+            ON policeInformation.policeInformationID = policeOfficerInformation.policeOfficerInformationID,
+        JOIN  additionalOfficers
+            ON policeOfficerInformation.policeOfficerInformationID = additionalOfficers.additionalOfficersID
     
-    Returns Data object joined with ReportedBy, VictimInformation, PolicePublicRelations, PoliceInformation.
+    Returns Data object joined with ReportedBy, VictimInformation, PolicePublicRelations, PoliceInformation, PoliceOfficerInformation, AdditionalOfficer.
     """
     with app.app_context():
         session = LocalSession()
@@ -501,13 +537,23 @@ def get_all_data() -> list[Data]:
         ).join(
             ReportedBy, Data.dataID==ReportedBy.reportedByID,
         ).join(
+            FormType, ReportedBy.reportedByID==FormType.formTypeID 
+        ).join(
+            FormDate, ReportedBy.reportedByID==FormDate.formDateID
+        ).join(
             VictimInformation, Data.dataID==VictimInformation.victimInformationID
         ).join(
             PolicePublicRelations, Data.dataID==PolicePublicRelations.policePublicRelationsID
         ).join(
+            IncidentAddress, PoliceInformation.policeInformationID==IncidentAddress.incidentAddressID
+        ).join(
+            MapCoordinates, IncidentAddress.incidentAddressID==MapCoordinates.mapCoordinatesID
+        ).join(
             PoliceInformation, Data.dataID==PoliceInformation.policeInformationID
         ).join(
             PoliceOfficerInformation, Data.dataID==PoliceOfficerInformation.policeOfficerInformationID
+        ).join(
+            AdditionalOfficer, PoliceOfficerInformation.policeOfficerInformationID==AdditionalOfficer.additionalOfficerID
         )
         
         try:
@@ -516,7 +562,7 @@ def get_all_data() -> list[Data]:
         except Exception as e:
             return {"SQL Error": e}
 
-def get_data_by_data_id(dataId) -> Data:
+def get_data_by_data_id(dataId: int) -> Data:
     """
     SELECT 
     FROM data
