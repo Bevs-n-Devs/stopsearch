@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from StopSearchUK import app
+from random import randint
 
 @app.route("/")
 def index_route() -> list[dict]:
@@ -31,7 +32,7 @@ def index_route() -> list[dict]:
         "CreateReportDemo": "/new/",
         "Demo": "/demo",
         "SearchAll": "/search/all",
-        "SearchByID": "/search/1",
+        "SearchByID": f"/search/{randint(1,5)}",
         "ReportPage": "/report",
         "MapPage": "/map",
         "MapData": "/map-data"
