@@ -64,8 +64,6 @@ def search_all_reports() -> list[Data]:
             ON data.dataID = policeInformation
         JOIN policeOfficerInformation
             ON policeInformation.policeInformationID = policeOfficerInformation.policeOfficerInformationID,
-    
-    Returns Data object joined with ReportedBy, VictimInformation, PolicePublicRelations, PoliceInformation, PoliceOfficerInformation, AdditionalOfficer.
     """
     with app.app_context():
         session = LocalSession()
@@ -95,21 +93,23 @@ def search_all_reports() -> list[Data]:
             PoliceOfficerInformation.police_station,
             PoliceOfficerInformation.get_additional_officers,
         ).join(
-            ReportedBy, Data.dataID==ReportedBy.reportedByID 
+            ReportedBy, Data.dataID==ReportedBy.data_ID 
         ).join(
             FormType, ReportedBy.reportedByID==FormType.formTypeID
         ).join(
             FormDate, ReportedBy.reportedByID==FormDate.formDateID
         ).join(
-            VictimInformation, Data.dataID==VictimInformation.victimInformationID
+            VictimInformation, Data.dataID==VictimInformation.data_ID
         ).join(
-            PolicePublicRelations, Data.dataID==PolicePublicRelations.policePublicRelationsID
+            PolicePublicRelations, Data.dataID==PolicePublicRelations.data_ID
         ).join(
             IncidentAddress, PolicePublicRelations.policePublicRelationsID==IncidentAddress.incidentAddressID
         ).join(
             MapCoordinates, IncidentAddress.incidentAddressID==MapCoordinates.mapCoordinatesID
         ).join(
-            PoliceInformation, Data.dataID==PoliceInformation.policeInformationID
+            PoliceInformation, Data.dataID==PoliceInformation.data_ID
+        ).join(
+            PoliceOfficerInformation, PoliceInformation.policeInformationID==PoliceOfficerInformation.policeOfficerInformationID
         )
         
         try:
@@ -164,8 +164,6 @@ def search_report_by_data_id(data_id: int):
         JOIN policeOfficerInformation
             ON policeInformation.policeInformationID = policeOfficerInformation.policeOfficerInformationID
         WHERE data.dataID = :data_id
-    
-    Returns Data object joined with ReportedBy, VictimInformation, PolicePublicRelations, PoliceInformation, PoliceOfficerInformation, AdditionalOfficer.
     """
     with app.app_context():
         session = LocalSession()
@@ -195,23 +193,127 @@ def search_report_by_data_id(data_id: int):
             PoliceOfficerInformation.police_station,
             PoliceOfficerInformation.get_additional_officers,
         ).join(
-            ReportedBy, Data.dataID==ReportedBy.reportedByID 
+            ReportedBy, Data.dataID==ReportedBy.data_ID 
         ).join(
             FormType, ReportedBy.reportedByID==FormType.formTypeID
         ).join(
             FormDate, ReportedBy.reportedByID==FormDate.formDateID
         ).join(
-            VictimInformation, Data.dataID==VictimInformation.victimInformationID
+            VictimInformation, Data.dataID==VictimInformation.data_ID
         ).join(
-            PolicePublicRelations, Data.dataID==PolicePublicRelations.policePublicRelationsID
+            PolicePublicRelations, Data.dataID==PolicePublicRelations.data_ID
         ).join(
             IncidentAddress, PolicePublicRelations.policePublicRelationsID==IncidentAddress.incidentAddressID
         ).join(
             MapCoordinates, IncidentAddress.incidentAddressID==MapCoordinates.mapCoordinatesID
         ).join(
-            PoliceInformation, Data.dataID==PoliceInformation.policeInformationID
+            PoliceInformation, Data.dataID==PoliceInformation.data_ID
+        ).join(
+            PoliceOfficerInformation, PoliceInformation.policeInformationID==PoliceOfficerInformation.policeOfficerInformationID
         ).where(
             Data.dataID == data_id
+        )
+        
+        try:
+            all_data = session.execute(sql_query).first()
+            return all_data
+        except Exception as e:
+            return {"SQL Error": e}
+
+# get report by FormType.form_type
+def search_report_by_form_type(form_type: str) -> list[Data]:
+    """
+    SELECT data.dataID
+           formType.form_type,
+           formDate.formatted_date,
+           formDate.formatted_month,
+           formDate.formatted_year,
+           formDate.formatted_time,
+           victimInformation.number_of_victims,
+           victimInformation.victim_age,
+           victimInformation.victim_race,
+           victimInformation.victim_gender,
+           policePublicRelations.search_reason,
+           policePublicRelations.type_of_search,
+           policePublicRelations.additional_notes,
+           incidentAddress.street_name,
+           incidentAddress.town_or_city,
+           mapCoordinates.longitude,
+           mapCoordinates.latitude,
+           policeInformation.number_of_police,
+           policeInformation.obtain_police_info,
+           policeOfficerInformation.police_badge_number,
+           policeOfficerInformation.police_officer_name,
+           policeOfficerInformation.police_station,
+           policeOfficerInformation.get_additional_officers,
+    FROM data
+        JOIN reportedBy
+            ON data.dataID = reportedBy.reportedByID
+        JOIN formType
+            ON reportedBy.reportedByID = formType.formTypeID,
+        JOIN formDate
+            ON reportedBy.reportedByID = formDate.formDateID
+        JOIN victimInformation
+            ON data.dataID = victimInformation.victimInformationID
+        JOIN policePublicRelations
+            ON data.dataID = policePublicRelationsID
+        JOIN incidentAddress
+            ON policePublicRelations.policePublicRelationsID = incidentAddress.incidentAddressID
+        JOIN mapCoordinates
+            ON incidentAddress.incidentAddressID = mapCoordinates.mapCoordinatesID
+        JOIN policeInformation
+            ON data.dataID = policeInformation
+        JOIN policeOfficerInformation
+            ON policeInformation.policeInformationID = policeOfficerInformation.policeOfficerInformationID
+        WHERE formType.form_type = :form_type
+    """
+    with app.app_context():
+        session = LocalSession()
+        
+        sql_query = select(
+            Data.dataID,
+            FormType.form_type,
+            FormDate.formatted_date,
+            FormDate.formatted_month,
+            FormDate.formatted_year,
+            FormDate.formatted_time,
+            VictimInformation.number_of_victims,
+            VictimInformation.victim_age,
+            VictimInformation.victim_race,
+            VictimInformation.victim_gender,
+            PolicePublicRelations.search_reason,
+            PolicePublicRelations.type_of_search,
+            PolicePublicRelations.additional_notes,
+            IncidentAddress.street_name,
+            IncidentAddress.town_or_city,
+            MapCoordinates.longitude,
+            MapCoordinates.latitude,
+            PoliceInformation.number_of_police,
+            PoliceInformation.obtain_police_info,
+            PoliceOfficerInformation.police_badge_number,
+            PoliceOfficerInformation.police_officer_name,
+            PoliceOfficerInformation.police_station,
+            PoliceOfficerInformation.get_additional_officers,
+        ).join(
+            ReportedBy, Data.dataID==ReportedBy.data_ID 
+        ).join(
+            FormType, ReportedBy.reportedByID==FormType.formTypeID
+        ).join(
+            FormDate, ReportedBy.reportedByID==FormDate.formDateID
+        ).join(
+            VictimInformation, Data.dataID==VictimInformation.data_ID
+        ).join(
+            PolicePublicRelations, Data.dataID==PolicePublicRelations.data_ID
+        ).join(
+            IncidentAddress, PolicePublicRelations.policePublicRelationsID==IncidentAddress.incidentAddressID
+        ).join(
+            MapCoordinates, IncidentAddress.incidentAddressID==MapCoordinates.mapCoordinatesID
+        ).join(
+            PoliceInformation, Data.dataID==PoliceInformation.data_ID
+        ).join(
+            PoliceOfficerInformation, PoliceInformation.policeInformationID==PoliceOfficerInformation.policeInformation_ID
+        ).where(
+            FormType.form_type == form_type
         )
         
         try:
@@ -219,8 +321,6 @@ def search_report_by_data_id(data_id: int):
             return all_data
         except Exception as e:
             return {"SQL Error": e}
-
-# get report by FormType.form_type
 
 # get report by year
 

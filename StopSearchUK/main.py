@@ -9,8 +9,7 @@ from StopSearchUK.stopsearch_api.new_report_route import new_report_route
 from StopSearchUK.stopsearch_frontend.report_page import report_page
 from StopSearchUK.stopsearch_api.map_route import map_data
 from StopSearchUK.stopsearch_frontend.map_page import stopsearch_map_page
-from StopSearchUK.stopsearch_api.search_engine_route import search_all_reports_route, search_reports_by_data_id_route
-
+from StopSearchUK.stopsearch_api.search_engine_route import search_all_reports_route, search_reports_by_data_id_route, search_report_by_form_type
 
 
 app.route("/")(index_route)
@@ -25,3 +24,4 @@ app.route("/map-data")(map_data)
 app.route("/map")(stopsearch_map_page)
 app.route("/search/all")(search_all_reports_route)
 app.route("/search/<data_id>")(search_reports_by_data_id_route)
+app.route("/search/formType/<form_type>")(search_report_by_form_type)
