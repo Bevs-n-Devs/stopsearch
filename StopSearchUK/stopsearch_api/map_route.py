@@ -4,6 +4,7 @@ from StopSearchUK.stopsearch_service import map_service
 import StopSearchUK.utils as utils
 from datetime import datetime
 import geocoder
+from random import randint
 
 @app.route('/mmap-data')
 def map_data():
@@ -35,7 +36,7 @@ def map_data():
         "CreateReportDemo": "/new/",
         "Demo": "/demo",
         "SearchAll": "/search/all",
-        "SearchByID": "/search/1",
+        "SearchByID": f"/search/{randint(1,5)}",
         "ReportPage": "/report",
         "MapPage": "/map",
         "MapData": "/map-data"
