@@ -20,11 +20,14 @@ from StopSearchUK.stopsearch_api.search_engine_route import (
     search_report_by_search_by_6_months,
     search_report_by_search_by_12_months,
     search_report_by_search_by_30_days,
+    search_report_by_year
 )
 from StopSearchUK.stopsearch_frontend.report_page import report_page
 from StopSearchUK.stopsearch_frontend.map_page import (
     stopsearch_map_page,
     show_map_by_data_id,
+    show_map_by_30_days,
+    show_map_by_90_days
 )
 
 
@@ -41,6 +44,12 @@ app.route("/report")(report_page)
 app.route("/map-data")(map_data)
 app.route("/map")(stopsearch_map_page)
 app.route("/map/<data_id>")(show_map_by_data_id)
+app.route("/map/30days")(show_map_by_30_days)
+app.route("/map/90days")(show_map_by_90_days)
+app.route("/map/6months")()
+app.route("/map/1year")()
+app.route("/map/year/<year>")()
+
 app.route("/search/all")(search_all_reports_route)
 app.route("/search/<data_id>")(search_reports_by_data_id_route)
 app.route("/search/formType/<form_type>")(search_report_by_form_type)
@@ -49,7 +58,8 @@ app.route("/search/victimGender/<victim_gender>")(search_report_by_victim_gender
 app.route("/search/victimRace/<victim_race>")(search_report_by_victim_race)
 app.route("/search/searchReason/<search_reason>")(search_report_by_search_reason)
 app.route("/search/searchType/<search_type>")(search_report_by_search_type)
-app.route("/search/90Days")(search_report_by_search_by_90_days)
-app.route("/search/6Months")(search_report_by_search_by_6_months)
-app.route("/search/12Months")(search_report_by_search_by_12_months)
-app.route("/search/30Days")(search_report_by_search_by_30_days)
+app.route("/search/90days")(search_report_by_search_by_90_days)
+app.route("/search/6months")(search_report_by_search_by_6_months)
+app.route("/search/1year")(search_report_by_search_by_12_months)
+app.route("/search/30days")(search_report_by_search_by_30_days)
+app.route("/search/year/<year>")(search_report_by_year)
