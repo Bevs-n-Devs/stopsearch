@@ -27,7 +27,12 @@ from StopSearchUK.stopsearch_frontend.map_page import (
     stopsearch_map_page,
     show_map_by_data_id,
     show_map_by_30_days,
-    show_map_by_90_days
+    show_map_by_90_days,
+    show_map_by_6_months,
+    show_map_by_1_year,
+    show_map_by_year, # needs fixing
+    show_map_by_form_type,
+    show_map_by_search_type,
 )
 
 
@@ -46,9 +51,11 @@ app.route("/map")(stopsearch_map_page)
 app.route("/map/<data_id>")(show_map_by_data_id)
 app.route("/map/30days")(show_map_by_30_days)
 app.route("/map/90days")(show_map_by_90_days)
-app.route("/map/6months")()
-app.route("/map/1year")()
-app.route("/map/year/<year>")()
+app.route("/map/6months")(show_map_by_6_months)
+app.route("/map/1year")(show_map_by_1_year)
+app.route("/map/year/<year>")(show_map_by_year)
+app.route("/map/formType/<form_type>")(show_map_by_form_type)
+app.route("/map/searchType/<search_type>")(show_map_by_search_type)
 
 app.route("/search/all")(search_all_reports_route)
 app.route("/search/<data_id>")(search_reports_by_data_id_route)

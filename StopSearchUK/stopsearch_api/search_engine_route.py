@@ -979,8 +979,8 @@ def search_report_by_search_by_30_days():
         return jsonify(app_data, app_pages, status, results)
 
 @app.route("/search/year/<year>")
-def search_report_by_year(year: int):
-    year = int(year)
+def search_report_by_year(year: str):
+    year = str(year)
     app_data = {
         "AppData": []
     }
