@@ -658,7 +658,7 @@ def search_report_by_search_reason(search_reason: str):
             
         return jsonify(app_data, app_pages, status, results)
     
-@app.route("/search/90Days")
+@app.route("/search/90days")
 def search_report_by_search_by_90_days():
     app_data = {
         "AppData": []
@@ -738,7 +738,7 @@ def search_report_by_search_by_90_days():
             
         return jsonify(app_data, app_pages, status, results)
 
-@app.route("/search/6Months")
+@app.route("/search/6months")
 def search_report_by_search_by_6_months():
     app_data = {
         "AppData": []
@@ -818,7 +818,7 @@ def search_report_by_search_by_6_months():
             
         return jsonify(app_data, app_pages, status, results)
     
-@app.route("/search/12Months")
+@app.route("/search/1year")
 def search_report_by_search_by_12_months():
     app_data = {
         "AppData": []
@@ -898,7 +898,7 @@ def search_report_by_search_by_12_months():
             
         return jsonify(app_data, app_pages, status, results)
 
-@app.route("/search/30Days")
+@app.route("/search/30days")
 def search_report_by_search_by_30_days():
     app_data = {
         "AppData": []
@@ -939,6 +939,87 @@ def search_report_by_search_by_30_days():
 
     with app.app_context():
         get_results = search_engine_service.search_report_by_last_30_days()
+
+        for data in get_results:
+
+            result_data = {
+                "ReportedBy": {
+                    "dataID": data[0],
+                    "reportedBy": data[1],
+                    "formattedDate": data[2],
+                    "formattedMonth": data[3],
+                    "formattedYear": data[4],
+                    "formattedTime": data[5],
+                },
+                "VictimInformation": {
+                    "numberOfVictims": data[6],
+                    "victimAge": data[7],
+                    "victimRace": data[8],
+                    "victimGender": data[9],
+                },
+                "PolicePublicRelations": {
+                    "searchReason": data[10],
+                    "typeOfSearch": data[11],
+                    "additionalNotes": data[12],
+                    "streetName": data[13],
+                    "townOrCity": data[14],
+                    "longitude": data[15],
+                    "latitude": data[16],
+                },
+                "PoliceInformation": {
+                    "numberOfPolice": data[17],
+                    "obtainPoliceInfo": data[18],
+                    "policeBadgeNumber": data[19],
+                    "policeOfficerName": data[20],
+                    "policeStation": data[21],
+                },
+            }
+            results["Results"].append(result_data)
+            
+        return jsonify(app_data, app_pages, status, results)
+
+@app.route("/search/year/<year>")
+def search_report_by_year(year: str):
+    year = str(year)
+    app_data = {
+        "AppData": []
+    }
+    app_pages = {
+        "AppPages": []
+    }
+    status = {
+        "Status": 200
+    }
+    
+    appData = {
+        "App": "StopSearch UK",
+        "AppPage": "/",
+        "Description": "An app developed to record and report incidents between the police and the public.",
+        "Founder": "Daniella Rose + Akoto Tech",
+        "Year": "2024",
+    }
+    app_data["AppData"].append(appData)
+    
+    appPages = {
+        "Index": "/",
+        "Manual": "/docs",
+        "HomePage": "/home",
+        "CreateReportDemo": "/new/",
+        "Demo": "/demo",
+        "SearchAll": "/search/all",
+        "SearchByID": f"/search/{randint(1,5)}",
+        "ReportPage": "/report",
+        "MapPage": "/map",
+        "MapData": "/map-data"
+    }
+    app_pages["AppPages"].append(appPages)
+
+    results = {
+        "Results": []
+    }
+
+    with app.app_context():
+        get_results = search_engine_service.search_report_by_year()
 
         for data in get_results:
 
